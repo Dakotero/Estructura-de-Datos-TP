@@ -1,0 +1,31 @@
+Necesitariamos:
+
+##### En pruebas y validaciones los codigos que queramos para ver si funciona y demas
+
+# Menu # 
+CLU que procesa RED y PEDIDOS, te pregunta KPI1 o KPI2, y te da la mejor ruta
+
+# Carga pedido # 
+donde se procesa el CSV con la informacion de los PEDIDOS en el formato para procesarlo
+
+# Carga RED # 
+donde se procesa el CSV que tiene toda la informacion de la RED
+
+# Carga Vehiculos # 
+donde se procesa el CSV con la informacion de los distintos vehiculos
+
+# Rutas # Con la informacion de RED, VEHICULOS, y PEDIDO, arma todos los caminos posibles
+
+# Optimizador # Segun si se eligue KPI1 o KPI2, eligue el minimo correspondiente
+
+# Graficador # Arma los graficos correspondientes de la respuesta elegida
+
+# Respuesta # Segun lo de Optimizador, y lo de los graficos, devuelve el CSV
+
+
+# Main #
+"""
+Se debe realizar un main que pruebe fehacientemente la funcionalidad solicitada:
+Levantamiento de datos desde archivos CSV, procesamiento de solicitudes y
+escritura de resultados.
+"""

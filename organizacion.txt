@@ -3,7 +3,7 @@ Necesitariamos:
 ##### En pruebas y validaciones los codigos que queramos para ver si funciona y demas
 
 # Menu # 
-CLU que procesa RED y PEDIDOS, te pregunta KPI1 o KPI2, y te da la mejor ruta
+CLU que procesa RED y PEDIDOS, te pregunta KPI1 y KPI2, y te da la mejor ruta
 
 # Carga pedido # 
 donde se procesa el CSV con la informacion de los PEDIDOS en el formato para procesarlo

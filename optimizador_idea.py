@@ -3,6 +3,17 @@
 # OPTIMIZADOR DE CAMINOS EJEMPLO
 
 ###########################################
+'''
+conexiones
+origen,destino,tipo,distancia_km,restriccion,valor_restriccion
+
+solicitudes
+id_carga,peso_kg,origen,destino
+CARGA_001,70000,Zarate,Mar_del_Plata
+
+nodos
+nombre: mardel, zarate, etc
+'''
 
 # Ejemplo de datos que ingresan
 

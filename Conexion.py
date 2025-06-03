@@ -39,9 +39,9 @@ class Conexion():
                 Conexion(origen, destino, modo, valor_restriccion)
 
                 
-archivo = 'conexiones.csv'
-Conexion.asignar_conexiones(archivo)
+#archivo = 'conexiones.csv'
+#Conexion.asignar_conexion(archivo)
 
-for c in Conexion.conexiones:
-    print(f"{c.origen} -> {c.destino} ({c.tipo}), distancia: {c.distancia}, restricción: {c.restriccion}, valor: {c.valor_restriccion}")
+#for c in Conexion.conexiones:
+#    print(f"{c.origen} -> {c.destino} ({c.modo}), distancia: {c.distancia}, restricción: {c.restriccion}, valor: {c.valor_restriccion}")
 

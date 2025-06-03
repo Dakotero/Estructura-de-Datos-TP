@@ -1,7 +1,7 @@
 class MedioTransporte:
     modos=["aereo","maritimo","ferroviario","automotor"]
-    def __init__(self, nombre,modo, velocidad_nom_kmh, capacidad_kg, costo_fijo, costo_km, costo_kg):
-        if self.modo not in self.modos:
+    def __init__(self, nombre, modo, velocidad_nom_kmh, capacidad_kg, costo_fijo, costo_km, costo_kg):
+        if modo not in MedioTransporte.modos:
             raise ValueError('Modo no permitido')
         #"""
         #Clase base para medios de transporte.

@@ -1,4 +1,4 @@
-from Conexiones import Conexion
+from Conexion import Conexion
 from Nodo import Nodo
 from medios_transporte import *
 
@@ -15,7 +15,7 @@ class Red_de_Conexiones:
 
         self.vehiculo = vehiculo # ACA ESTOY GUARDANDO EL OBJETO ENTERO DE LA SUBCLASE DEL VEHICULO
         # print(red.vehiculo.nombre)  >> "Avion A1"
-        self.caminos = []
+        self.caminos = {}
 
 # Mas adelante, uso una funcion para
 # crear una Red de Conexiones por instancia de clase de vehiculos que existan
@@ -90,21 +90,25 @@ def super_optimizador(vehiculos, inicio, fin):
         print(f"[ERROR] El nodo de inicio o fin no existe.")
         return []
 
-    redes = []
     todos_los_caminos = []
 
     for v in vehiculos: # Lo corro una vez por vehiculo existente
         red = Red_de_Conexiones(v) # Creo la red, al hacer esto, AUTOMATICAMENTE ya completo el diccionario de caminos
 
         if inicio not in red.caminos or fin not in red.caminos:
-            print(f"\n[INFO] No hay conexion entre {inicio} y {fin} en red de transporte: {v.modo}")
+            print(f"\n[INFO] No hay conexion entre {inicio} y {fin} en red de transporte: {v.nombre} ({v.modo})")
             continue
 
-        print(f"\n[INFO] Buscando caminos para el medio: {v.modo}")
+        print(f"\n[INFO] Buscando caminos para el medio: {v.nombre} ({v.modo})")
         caminos = red.buscar_caminos(inicio, fin)                      # Tengo en caminos la lista de todas las posiblidades
 
-        for c in caminos:
-            print(f"[CAMINO {v.modo.upper()}]: {c}")
+    if not caminos:
+        print(f"[INFO] No se encontraron caminos entre {inicio.nombre} y {fin.nombre} para el medio: {v.nombre} ({v.modo})")
+
+    for c in caminos: # c ES UNA LISTA DE NODOS
+        # ENTONCES para conseguir el NOMBRE tengo que recorrer c y sacar el nombre de cada nodo
+        nombres_caminos = [nodo.nombre for nodo in c]
+        print(f"[RESULTADO] : {nombres_caminos}")
 
     return todos_los_caminos
 

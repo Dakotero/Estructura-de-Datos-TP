@@ -102,13 +102,13 @@ def super_optimizador(vehiculos, inicio, fin):
         print(f"\n[INFO] Buscando caminos para el medio: {v.nombre} ({v.modo})")
         caminos = red.buscar_caminos(inicio, fin)                      # Tengo en caminos la lista de todas las posiblidades
 
-    if not caminos:
-        print(f"[INFO] No se encontraron caminos entre {inicio.nombre} y {fin.nombre} para el medio: {v.nombre} ({v.modo})")
-
-    for c in caminos: # c ES UNA LISTA DE NODOS
-        # ENTONCES para conseguir el NOMBRE tengo que recorrer c y sacar el nombre de cada nodo
-        nombres_caminos = [nodo.nombre for nodo in c]
-        print(f"[RESULTADO] : {nombres_caminos}")
+        if not caminos:
+            print(f"[INFO] No se encontraron caminos entre {inicio.nombre} y {fin.nombre} para el medio: {v.nombre} ({v.modo})")
+        else:
+            for c in caminos: # c ES UNA LISTA DE NODOS
+                # ENTONCES para conseguir el NOMBRE tengo que recorrer c y sacar el nombre de cada nodo
+                nombres_caminos = [nodo.nombre for nodo in c]
+                print(f"[RESULTADO] : {nombres_caminos}")
 
     return todos_los_caminos
 

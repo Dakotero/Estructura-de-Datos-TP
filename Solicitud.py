@@ -13,29 +13,34 @@ class Solicitud:
         
     @classmethod
     def asignar_solicitudes(cls, archivo_solicitud):
-        with open(archivo_solicitud, 'r') as f:
+        with open(archivo_solicitud, 'r', encoding='utf-8') as f:
             lector = csv.reader(f)
             next(lector)
             for fila in lector:
                 if len(fila) < 4:
                     raise ValueError("Falta información en la fila del archivo de pedidos.")
-                id_carga = fila[0]
-                peso_kg = int(fila[1])
-                origen = fila[2]
-                destino = fila[3]
+                id_carga = fila[0].strip()
+                peso_kg = int(fila[1].strip())
+                origen = fila[2].strip()
+                destino = fila[3].strip()
+                
+                if id_carga in cls.solicitudes:
+                    raise ValueError(f"ID de carga duplicado: {id_carga}")
 
-                if origen not in Nodo.nodos.keys() or destino not in Nodo.nodos.keys():
+                if origen not in Nodo.nodos or destino not in Nodo.nodos:
                     raise ValueError(f"Origen o destino inválido: {origen}, {destino}")
 
                 Solicitud(id_carga, peso_kg, origen, destino)
 
-                    
+
 archivo_solicitud = 'solicitudes.csv'
 Solicitud.asignar_solicitudes(archivo_solicitud)          
-print(Solicitud.solicitudes)
 
-for s in Solicitud.solicitudes:
-    print(f"Pedido {s.id_carga}: {s.origen} -> {s.destino} ({s.peso_kg} kg)")
+for s in Solicitud.solicitudes.values():
+    print(f"Solicitud {s.id_carga}: origen= {s.origen}, destino= {s.destino}, carga= {s.peso_kg} kg")
+
+
+
 '''id_carga,peso_kg,origen,destino
 CARGA_001,70000,Zarate,Mar_del_Plata
 '''

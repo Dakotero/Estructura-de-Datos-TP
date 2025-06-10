@@ -33,3 +33,30 @@ Conexion(nodo_a, nodo_d, "aereo", 500)
 Conexion(nodo_c, nodo_f, "aereo", 600)
 
 super_optimizador(vehiculos, nodo_a, nodo_c)
+
+
+
+#aca lo q agregue yo (belu) esta en proceso: 
+
+from Conexion import Conexion
+from Solicitud import Solicitud
+from Nodo import Nodo
+from medios_transporte import MedioTransporte
+
+
+archivo_solicitud = 'solicitudes.csv'
+archivo_nodos = 'nodos.csv'
+archivo = 'conexiones.csv'
+
+Solicitud.asignar_solicitudes(archivo_solicitud)          
+Nodo.asignar_nodos(archivo_nodos)
+Conexion.asignar_conexion(archivo)
+
+aereo = MedioTransporte.Aereo(600, 5000, 750, 40, 10, 400)
+maritimo = MedioTransporte.Fluvial(40, 100000, 500, 15, 2, 1500)
+ferroviario = MedioTransporte.Ferroviario(100, 150000, 100, 20, 3, 15)
+automotor = MedioTransporte.Automotor(80, 30000, 30, 5, None, 2)
+
+
+for s in Solicitud.solicitudes.values():
+    print(f"Solicitud {s.id_carga}: origen= {s.origen}, destino= {s.destino}, carga= {s.peso_kg} kg")

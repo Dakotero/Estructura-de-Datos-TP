@@ -27,7 +27,8 @@ class Nodo():
                 if fila[0] not in cls.nodos:  # Verifica si el nodo ya existe:
                     Nodo(fila[0])
                 
-                
+'''                
 archivo_nodos = 'nodos.csv'
 Nodo.asignar_nodos(archivo_nodos)
 print(Nodo.nodos)
+'''

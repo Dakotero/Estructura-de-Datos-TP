@@ -2,6 +2,25 @@ import csv
 from Nodo import Nodo 
 from medios_transporte import MedioTransporte
 
+'''
+for ruta in rutas:
+    for conexion in ruta:
+        if conexion[0] == 'ferroviario'
+        
+                if modo == "ferroviario":
+                    transporte = MedioTransporte.ferroviario
+                elif modo == "automotor":
+                    transporte = MedioTransporte.automotor
+                elif modo == "aereo":
+                    transporte = MedioTransporte.aereo
+                elif modo == "fluvial":
+                    transporte = MedioTransporte.fluvial
+                else:
+
+for conexion in Conexion.conexiones:
+if conexion.modo 
+    
+'''
 
 class Conexion():
     conexiones = []

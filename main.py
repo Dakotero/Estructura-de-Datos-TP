@@ -10,9 +10,10 @@ archivo_solicitud = 'solicitudes.csv'
 archivo_nodos = 'nodos.csv'
 archivo = 'conexiones.csv'
 
-Solicitud.asignar_solicitudes(archivo_solicitud)          
 Nodo.asignar_nodos(archivo_nodos)
 Conexion.asignar_conexion(archivo)
+Solicitud.asignar_solicitudes(archivo_solicitud)          
+
 
 aereo = Aereo(600, 5000, 750, 40, 10, 400)
 maritimo = Fluvial(40, 100000, 500, 15, 2, 1500)
@@ -33,7 +34,11 @@ vehiculos = [aereo, maritimo, ferroviario, automotor]
 #    print(f"Origen: {c.origen.nombre}, Destino: {c.destino.nombre}, Modo: {c.modo}")
 
 for s in Solicitud.solicitudes.values():
-    print(f"Solicitud {s.id_carga}: origen= {s.origen}, destino= {s.destino}, carga= {s.peso_kg} kg")
+    print(f"\nSolicitud {s.id_carga}: origen= {s.origen}, destino= {s.destino}, carga= {s.peso_kg} kg")
     inicio = Nodo.nodos[s.origen]
     fin = Nodo.nodos[s.destino]
-    super_optimizador(vehiculos, inicio, fin)
+    super_optimizador(vehiculos, inicio, fin) # LO DEJO COMO DEBUGGING, PERO ELIMINAR
+
+    rutas = super_optimizador(vehiculos, inicio, fin)
+
+#    rutas_chequeadas = super_chequeador()

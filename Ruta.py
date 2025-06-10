@@ -20,7 +20,7 @@ class Ruta():
         self.solicitud = solicitud
         self.conexiones = conexiones
         self.costo_total = 0
-        self.tiempo_total = 0  
+        self.tiempo_total = 0
         
         
     def calcular_tiempo_ruta(self): #transporte tiene que ser una de las 4 instancias de transporte
@@ -29,15 +29,6 @@ class Ruta():
 
         for conexion in self.conexiones:
             velocidad_transporte = self.transporte.velocidad_nom_kmh
-            
-                if comodo == "ferroviario":
-                    transporte = MedioTransporte.ferroviario
-                elif modo == "automotor":
-                    transporte = MedioTransporte.automotor
-                elif modo == "aereo":
-                    transporte = MedioTransporte.aereo
-                elif modo == "fluvial":
-                    transporte = MedioTransporte.fluvial
 
             if transporte.modo == "aereo":
                 prob_mal_tiempo = float(conexion.valor_restriccion or 0)

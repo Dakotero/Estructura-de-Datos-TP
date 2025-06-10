@@ -88,22 +88,25 @@ def super_optimizador(vehiculos, inicio, fin):
 
     if inicio not in Nodo.nodos.values() or fin not in Nodo.nodos.values():
         print(f"[ERROR] El nodo de inicio o fin no existe.")
-        return []
+        return {}
 
-    todos_los_caminos = []
+    todos_los_caminos = {}
 
     for v in vehiculos: # Lo corro una vez por vehiculo existente
         red = Red_de_Conexiones(v) # Creo la red, al hacer esto, AUTOMATICAMENTE ya completo el diccionario de caminos
 
         if inicio not in red.caminos or fin not in red.caminos:
-            print(f"\n[INFO] No hay conexion entre {inicio} y {fin} en red de transporte: {v.nombre} ({v.modo})")
+            print(f"\n[INFO] No hay conexion entre {inicio} y {fin} en red de transporte: ({v.modo})")
+#            print(f"[DEBUG] Caminos para el medio: {v.modo}")
+#            for nodo, vecinos in red.caminos.items():
+#                print(f"[DEBUG] {nodo.nombre}: {[n.nombre for n in vecinos]}")
             continue
 
-        print(f"\n[INFO] Buscando caminos para el medio: {v.nombre} ({v.modo})")
+        print(f"\n[INFO] Buscando caminos para el medio: ({v.modo})")
         caminos = red.buscar_caminos(inicio, fin)                      # Tengo en caminos la lista de todas las posiblidades
 
         if not caminos:
-            print(f"[INFO] No se encontraron caminos entre {inicio.nombre} y {fin.nombre} para el medio: {v.nombre} ({v.modo})")
+            print(f"[INFO] No se encontraron caminos entre {inicio.nombre} y {fin.nombre} para el medio: ({v.modo})")
         else:
             for c in caminos: # c ES UNA LISTA DE NODOS
                 # ENTONCES para conseguir el NOMBRE tengo que recorrer c y sacar el nombre de cada nodo
@@ -111,4 +114,3 @@ def super_optimizador(vehiculos, inicio, fin):
                 print(f"[RESULTADO] : {nombres_caminos}")
 
     return todos_los_caminos
-

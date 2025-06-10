@@ -11,6 +11,12 @@ class Nodo():
     
     def __repr__(self):
         return self.__str__()
+    
+    def __eq__(self, other):
+        return isinstance(other, Nodo) and self.nombre == other.nombre
+
+    def __hash__(self):
+        return hash(self.nombre)
 
     @classmethod
     def asignar_nodos(cls, archivo_nodos):

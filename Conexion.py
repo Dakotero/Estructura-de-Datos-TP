@@ -32,7 +32,7 @@ class Conexion():
                 #validar que no exista ya ese camino
                 origen = Nodo.nodos[fila[0]]
                 destino = Nodo.nodos[fila[1]]
-                modo= fila[2]
+                modo= fila[2].lower()
                 restriccion = fila[3]
                 valor_restriccion = fila[4]
                 Conexion(origen, destino, modo, restriccion, valor_restriccion)
@@ -42,6 +42,7 @@ archivo = 'conexiones.csv'
 Conexion.asignar_conexion(archivo)
 
 for c in Conexion.conexiones:
+lista_
     print(f"{c.origen} -> {c.destino} ({c.modo}), distancia: {c.distancia}, restricción: {c.restriccion}, valor: {c.valor_restriccion}")
 
 '''

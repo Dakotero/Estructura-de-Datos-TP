@@ -7,6 +7,8 @@ from Conexion import Conexion
 from Solicitud import Solicitud
 from Nodo import Nodo
 from medios_transporte import MedioTransporte
+import math
+
 
 
 def buscar_rutas(origen, destino, conexiones):
@@ -30,7 +32,8 @@ def buscar_rutas(origen, destino, conexiones):
     return rutas
 
 
-def calcular_tiempo_ruta(transporte, ruta):
+def calcular_tiempo_ruta(transporte, ruta): #transporte tiene que ser una de las 4 instancias de transporte
+                                            #ruta tiene que ser una lista de objetos
     tiempo_total = 0
 
     for conexion in ruta:
@@ -51,31 +54,31 @@ def calcular_tiempo_ruta(transporte, ruta):
     return tiempo_total
     
 def calcular_costo_ruta(transporte, ruta, solicitud):
-    costo_total=0
     
     for conexion in ruta:
+        cantidad = math.ceil(solicitud.peso_kg / transporte.capacidad_kg)
         if transporte.modo == "automotor":
-            costo_total += transporte.costo_fijo
-            costo_total += transporte.costo_km * conexion.distancia
-            costo_total += transporte.costokg(solicitud.peso_kg) * solicitud.peso_kg
+            costo_total += transporte.costo_fijo*cantidad
+            costo_total += (transporte.costo_km * conexion.distancia)*cantidad
+            costo_total += (transporte.costokg(solicitud.peso_kg) * solicitud.peso_kg)*cantidad
 
         elif transporte.modo == "ferroviario":
-            costo_total += transporte.costo_fijo
-            tramo_largo = conexion.distancia >= 200
-            costo_total += transporte.costokm(tramo_largo) * conexion.distancia
-            costo_total += transporte.costo_kg * solicitud.peso_kg
+            costo_total += transporte.costo_fijo*cantidad
+            tramo_largo = conexion.distancia >= 200*cantidad
+            costo_total += (transporte.costokm(tramo_largo) * conexion.distancia)*cantidad
+            costo_total += (transporte.costo_kg * solicitud.peso_kg)*cantidad
             
         elif transporte.modo == "fluvial":
             tipo_tramo = conexion.valor_restriccion
             costo_fijo_real = transporte.costofijo(tasa_maritima=(tipo_tramo == "maritimo"))
-            costo_total += costo_fijo_real
-            costo_total += transporte.costo_km * conexion.distancia
-            costo_total += transporte.costo_kg * solicitud.peso_kg
+            costo_total += costo_fijo_real*cantidad
+            costo_total += (transporte.costo_km * conexion.distancia)*cantidad
+            costo_total += (transporte.costo_kg * solicitud.peso_kg)*cantidad
         
         elif transporte.modo == "aereo":
-            costo_total += transporte.costo_fijo
-            costo_total += transporte.costo_km * conexion.distancia
-            costo_total += transporte.costo_kg * solicitud.peso_kg
+            costo_total += transporte.costo_fijo*cantidad
+            costo_total += (transporte.costo_km * conexion.distancia)*cantidad
+            costo_total += (transporte.costo_kg * solicitud.peso_kg)*cantidad
     return costo_total
 
 
@@ -94,7 +97,7 @@ def plan():
                     
             rutas = buscar_rutas(origen, destino, conexiones_modo)        
                   
-            print(f"Rutas encontradas: {len(rutas)} para modo {modo}")  
+            print(f"Rutas encontradas: {len(rutas)} para modo {modo}") 
             if not rutas:
                 print(f"No se encontraron rutas desde {origen} a {destino} para el modo {modo}.")
                 continue
@@ -114,21 +117,17 @@ def plan():
                 else:
                     continue
                 
-                if solicitud.peso_kg > transporte.capacidad_kg:
-                    continue
+                if not solicitud.peso_kg > transporte.capacidad_kg:
                 
-                costo = calcular_costo_ruta(transporte, ruta, solicitud)
-                tiempo = calcular_tiempo_ruta(transporte, ruta)
-                
-                print(f"Solicitud {solicitud.id_carga} puede ser atendida con el modo {modo}.")
-                
-                
-                
-                print(f"Solicitud {solicitud.id_carga} puede ser atendida con el modo {modo}.")
-                print(f"  Ruta: {' -> '.join([c.origen for c in ruta] + [ruta[-1].destino])}")
-                print(f"  Costo total: {costo}")
-                print(f"  Tiempo total: {tiempo:.2f} horas")
-                print("-" * 40)
+                    costo = calcular_costo_ruta(transporte, ruta, solicitud)
+                    tiempo = calcular_tiempo_ruta(transporte, ruta)
+                                        
+
+                    print(f"Solicitud {solicitud.id_carga} puede ser atendida con el modo {modo}.")
+                    print(f"  Ruta: {' >>> '.join([c.origen for c in ruta] + [ruta[-1].destino])}")
+                    print(f"  Costo total: {costo}")
+                    print(f"  Tiempo total: {tiempo:.2f} horas")
+                    print("-" * 40)
 
                             
             

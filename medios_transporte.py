@@ -41,21 +41,22 @@ class Ferroviario(MedioTransporte):
         return self.costo_km
 
 class Automotor(MedioTransporte):
-    def __init__(self, velocidad_nom_kmh, capacidad_kg, costo_fijo, costo_km, costo_kg):
+    def __init__(self, velocidad_nom_kmh, capacidad_kg, costo_fijo, costo_km, costo_kg, costo_kg_extra):
         super().__init__( "automotor", velocidad_nom_kmh, capacidad_kg, costo_fijo, costo_km, costo_kg)
+        self.costo_kg_extra = costo_kg_extra
         
     def costokg(self, carga_kg): #afecta el costo por kilogramo (costo_kg). depende de solicitud 
         if carga_kg>= 15000:
-            return 2
-        return 1
+            return self.costo_kg_extra
+        return self.costo_kg
 
-
+'''
 aereo = Aereo(600, 5000, 750, 40, 10, 400)
 maritimo = Fluvial(40, 100000, 500, 15, 2, 1500)
 ferroviario = Ferroviario(100, 150000, 100, 20, 3, 15)
 automotor = Automotor(80, 30000, 30, 5, None)
 
-
+'''
 #esto lo puse x las dudas pero sirve xq lo vamos a validar en la Redes de transporte. ignorar
 '''for transporte in [aereo, maritimo, ferroviario, automotor]:
     if solicitud.peso_kg <= transporte.capacidad_kg:

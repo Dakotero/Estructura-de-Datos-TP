@@ -32,13 +32,13 @@ class Solicitud:
 
                 Solicitud(id_carga, peso_kg, origen, destino)
 
-
+'''
 archivo_solicitud = 'solicitudes.csv'
 Solicitud.asignar_solicitudes(archivo_solicitud)          
 
 for s in Solicitud.solicitudes.values():
     print(f"Solicitud {s.id_carga}: origen= {s.origen}, destino= {s.destino}, carga= {s.peso_kg} kg")
-
+'''
 
 
 '''id_carga,peso_kg,origen,destino

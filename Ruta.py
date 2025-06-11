@@ -1,5 +1,35 @@
-import math
 
+import math
+from Conexion import Conexion
+from Solicitud import Solicitud
+
+class Ruta():
+    rutas = [] #no se para que guardamos esta lista todavia, vemos si la sacamos a futuro
+    def __init__(self, transporte, solicitud, conexiones): #solicitud tiene que ser el objeto (instancia) de solicitud, conexiones es una lista de objetos conexion
+        self.transporte = transporte
+        self.solicitud = solicitud
+        self.conexiones = conexiones
+        self.costo_total = 0
+        self.tiempo_total = 0
+        
+        
+    def calcular_tiempo_ruta(self):
+        tiempo_total = 0
+        for conexion in self.conexiones:
+                tiempo_total += Conexion.calcular_tiempo_conexion(conexion)
+        return tiempo_total
+                
+    def calcular_costo_ruta(self, solicitud):
+        costo_total = 0
+        for conexion in self.conexiones:
+            costo_total += Conexion.calcular_costo_conexion(conexion, solicitud)
+        return costo_total
+
+
+
+
+
+'''
         
 for conexion in 
                 if modo == "ferroviario":
@@ -12,17 +42,70 @@ for conexion in
                     transporte = MedioTransporte.fluvial
                 else:
                     continue
+            
+transportes = {"ferroviario": ferroviario, "automotor": automotor, "aereo": aereo,"fluvial": fluvial}    
+'''
+'''
+for solicitud in Solicitud.solicitudes.values():
+    for ruta in rutas:
+        tiempo_total = 0
+        costo_total = 0
+        for conexion in ruta[1]:
+            tiempo_total += Conexion.calcular_tiempo_conexion(conexion)
+            costo_total += Conexion.calcular_costo_conexion(conexion, solicitud)
+ '''
+'''           
+for solicitud in Solicitud.solicitudes.values():
+    for ruta in rutas:
+        tiempo_total = 0
+        for conexion in ruta[1]:
+            tiempo_total += Conexion.calcular_tiempo_conexion(conexion)
+            
 
-class Ruta():
-    lista_rutas = []
-    def __init__(self, transporte, solicitud, conexiones): #solicitud tiene que ser el objeto (instancia) de solicitud, conexiones es una lista de objetos conexion
-        self.transporte = transporte
-        self.solicitud = solicitud
-        self.conexiones = conexiones
-        self.costo_total = 0
-        self.tiempo_total = 0
+for solicitud in Solicitud.solicitudes.values():
+    for ruta in rutas:
+        costo_total = 0
+        for conexion in ruta[1]:
+            costo_total += Conexion.calcular_costo_conexion(conexion, solicitud)
+
+def calcular_tiempo_ruta(self):
+    tiempo_total = 0
+    for conexion in self.conexiones:
+            tiempo_total += Conexion.calcular_tiempo_conexion(conexion)
+            
+def calcular_costo_ruta(self, solicitud):
+    costo_total = 0
+    for conexion in self.conexiones:
+        costo_total += Conexion.calcular_costo_conexion(conexion, solicitud)
+
+
+for ruta in rutas:
+    if ruta[0] == 'ferroviario':
+        transporte = transportes['ferroviario']
+    elif ruta[0] == 'automotor':
+        transporte = transportes['automotor']
+    elif ruta[0] == 'aereo':
+        transporte = transportes['aereo']
+    elif ruta[0] == 'fluvial':
+        transporte = transportes['fluvial']
+    
+    for conexion in ruta[1]:
         
         
+
+    for conexion in conexion[1]:
+if conexion.modo 
+    # [
+#     ('automotor', [Conexion(A→B), Conexion(B→C)]),
+#     ('ferroviario', [Conexion(A→C)]),
+
+
+
+#     
+
+
+    '''   
+'''
     def calcular_tiempo_ruta(self): #transporte tiene que ser una de las 4 instancias de transporte
                                             #ruta tiene que ser una lista de objetos
         tiempo_total = 0
@@ -69,3 +152,6 @@ class Ruta():
                 costo_total += (transporte.costo_km * conexion.distancia)*cantidad
                 costo_total += (transporte.costo_kg * self.solicitud.peso_kg)*cantidad
         return costo_total
+        
+        '''
+        

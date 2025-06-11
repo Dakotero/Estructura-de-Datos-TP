@@ -1,26 +1,7 @@
 import csv
+import math
 from Nodo import Nodo 
-from medios_transporte import MedioTransporte
-
-'''
-for ruta in rutas:
-    for conexion in ruta:
-        if conexion[0] == 'ferroviario'
-        
-                if modo == "ferroviario":
-                    transporte = MedioTransporte.ferroviario
-                elif modo == "automotor":
-                    transporte = MedioTransporte.automotor
-                elif modo == "aereo":
-                    transporte = MedioTransporte.aereo
-                elif modo == "fluvial":
-                    transporte = MedioTransporte.fluvial
-                else:
-
-for conexion in Conexion.conexiones:
-if conexion.modo 
-    
-'''
+from medios_transporte import MedioTransporte, transportes
 
 class Conexion():
     conexiones = []
@@ -52,9 +33,70 @@ class Conexion():
                 origen = Nodo.nodos[fila[0]]
                 destino = Nodo.nodos[fila[1]]
                 modo= fila[2].lower()
+                
+                if modo == "ferroviario":
+                    modo = transportes['ferroviario']
+                elif modo == "automotor":
+                    modo = transportes['automotor']
+                elif modo == "aereo":
+                    modo = transportes['aereo']
+                elif modo == "fluvial":
+                    modo = transportes['fluvial']
+                    
                 restriccion = fila[3]
                 valor_restriccion = fila[4]
+
                 Conexion(origen, destino, modo, restriccion, valor_restriccion)
+                
+
+    def calcular_tiempo_conexion(self):
+        tiempo_conexion = 0
+        transporte = self.modo
+        velocidad_transporte = transporte.velocidad_nom_kmh
+
+        if transporte == "aereo":
+            prob_mal_tiempo = float(self.valor_restriccion or 0)
+            velocidad_transporte = (transporte.vel_mal_clima_kmh)*(prob_mal_tiempo) + (transporte.velocidad_nom_kmh)*(1-prob_mal_tiempo)
+
+        if self.restriccion == 'velocidad_max':
+            vel_max=float(self.valor_restriccion)
+        else:
+            vel_max=transporte.velocidad_nom_kmh
+            vel= min(vel_max, velocidad_transporte)
+                
+        tiempo_conexion += self.distancia_km / vel
+        return tiempo_conexion 
+    
+            
+    def calcular_costo_conexion(self, solicitud):
+        transporte = self.modo
+        cantidad = math.ceil(solicitud.peso_kg / transporte.capacidad_kg)
+        costo_conexion = 0
+        if transporte.modo == "automotor":
+            costo_conexion += transporte.costo_fijo*cantidad
+            costo_conexion += (transporte.costo_km * self.distancia)*cantidad
+            costo_conexion += (transporte.costokg(solicitud.peso_kg) * solicitud.peso_kg)*cantidad
+
+        elif transporte.modo == "ferroviario":
+            costo_conexion += transporte.costo_fijo*cantidad
+            tramo_largo = self.distancia >= 200*cantidad
+            costo_conexion += (transporte.costokm(tramo_largo) * self.distancia)*cantidad
+            costo_conexion += (transporte.costo_kg * solicitud.peso_kg)*cantidad
+                
+        elif transporte.modo == "fluvial":
+            tipo_tramo = self.valor_restriccion
+            costo_fijo_real = transporte.costofijo(tasa_maritima=(tipo_tramo == "maritimo"))
+            costo_conexion += costo_fijo_real*cantidad
+            costo_conexion += (transporte.costo_km * self.distancia)*cantidad
+            costo_conexion += (transporte.costo_kg * solicitud.peso_kg)*cantidad
+            
+        elif transporte.modo == "aereo":
+            costo_conexion += transporte.costo_fijo*cantidad
+            costo_conexion += (transporte.costo_km * self.distancia)*cantidad
+            costo_conexion += (transporte.costo_kg * solicitud.peso_kg)*cantidad
+        return costo_conexion
+        
+
 
 '''                
 archivo = 'conexiones.csv'

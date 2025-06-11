@@ -50,13 +50,17 @@ class Automotor(MedioTransporte):
             return self.costo_kg_extra
         return self.costo_kg
 
-'''
-aereo = Aereo(600, 5000, 750, 40, 10, 400)
-maritimo = Fluvial(40, 100000, 500, 15, 2, 1500)
-ferroviario = Ferroviario(100, 150000, 100, 20, 3, 15)
-automotor = Automotor(80, 30000, 30, 5, None)
+#ver que hacemos con esto. por ahora es importante que este aca porqiue no puedo llamar estas
+# instancias para otras clases desde el main. por ahora queda aca. se crean los transportes y se guardan en un diccionario
 
-'''
+aereo = Aereo(600, 5000, 750, 40, 10, 400)
+fluvial = Fluvial(40, 100000, 500, 15, 2, 1500)
+ferroviario = Ferroviario(100, 150000, 100, 20, 3, 15)
+automotor = Automotor(80, 30000, 30, 5, 1, 2)
+
+transportes = {"ferroviario": ferroviario, "automotor": automotor, "aereo": aereo,"fluvial": fluvial}    
+
+
 #esto lo puse x las dudas pero sirve xq lo vamos a validar en la Redes de transporte. ignorar
 '''for transporte in [aereo, maritimo, ferroviario, automotor]:
     if solicitud.peso_kg <= transporte.capacidad_kg:

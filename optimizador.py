@@ -2,6 +2,7 @@ from Conexion import Conexion
 from Nodo import Nodo
 from medios_transporte import *
 
+
 ###########################################
 
 # OPTIMIZADOR

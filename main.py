@@ -3,8 +3,10 @@
 from Conexion import Conexion
 from Solicitud import Solicitud
 from Nodo import Nodo
+from Ruta import Ruta
 from medios_transporte import *
 from optimizador import *
+from funciones_extras import *
 
 archivo_solicitud = 'solicitudes.csv'
 archivo_nodos = 'nodos.csv'
@@ -15,11 +17,20 @@ Conexion.asignar_conexion(archivo)
 Solicitud.asignar_solicitudes(archivo_solicitud)          
 
 
+
+
+
+#LO PUSE COMENTADO XQ LO MOVI A MEDIOS_TRANSPORTE.PY
+
+'''
 aereo = Aereo(600, 5000, 750, 40, 10, 400)
-maritimo = Fluvial(40, 100000, 500, 15, 2, 1500)
+fluvial = Fluvial(40, 100000, 500, 15, 2, 1500)
 ferroviario = Ferroviario(100, 150000, 100, 20, 3, 15)
 automotor = Automotor(80, 30000, 30, 5, 1, 2)
-vehiculos = [aereo, maritimo, ferroviario, automotor]
+vehiculos = [aereo, fluvial, ferroviario, automotor] #capaz lo saco este
+'''
+transportes = {"ferroviario": ferroviario, "automotor": automotor, "aereo": aereo,"fluvial": fluvial}    
+vehiculos = list(transportes.values())
 
 #print("\n--- SOLICITUDES CARGADAS ---")
 #for s in Solicitud.solicitudes.values():
@@ -39,6 +50,12 @@ for s in Solicitud.solicitudes.values():
     fin = Nodo.nodos[s.destino]
     super_optimizador(vehiculos, inicio, fin) # LO DEJO COMO DEBUGGING, PERO ELIMINAR
 
-    rutas = super_optimizador(vehiculos, inicio, fin)
+    rutas_optimizador = super_optimizador(vehiculos, inicio, fin)
+    rutas = convertir_a_objetos_ruta(rutas_optimizador, s)
+    for ruta in rutas:
+        tiempo_total = Ruta.calcular_tiempo_ruta(ruta)
+        costo_total = Ruta.calcular_costo_ruta(ruta, s)
+    
+
 
 #    rutas_chequeadas = super_chequeador()

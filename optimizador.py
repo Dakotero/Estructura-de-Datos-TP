@@ -27,7 +27,10 @@ class Red_de_Conexiones:
 # Esto lo hago al inicializar la clase Red_de_Conexiones
 
         for conexion in Conexion.conexiones:
-            if conexion.modo == self.vehiculo.modo:                         # Que el vehiculo en la conexion es igual al vehiculo de mi Red
+#            print(f"[DEBUG] Revisando conexion: {conexion.origen.nombre} -> {conexion.destino.nombre} con modo {type(conexion.modo)}, {conexion.modo}")
+#            print(f"Modo {conexion.modo.modo} =?= {self.vehiculo.modo}")
+            if conexion.modo.modo == self.vehiculo.modo:
+#                print(f"[DEBUG] El vehiculo en la conexion es igual al vehiculo de mi Red")
                 self.agregar_conexion(conexion.origen, conexion.destino)    # No existe todavia, es la siguiente funcion
 
 ###########################################
@@ -107,7 +110,7 @@ def super_optimizador(vehiculos, inicio, fin):
         caminos = red.buscar_caminos(inicio, fin)                      # Tengo en caminos la lista de todas las posiblidades
 
         if not caminos:
-            print(f"[INFO] No se encontraron caminos entre {inicio.nombre} y {fin.nombre} para el medio: {v.nombre} ({v.modo})")
+            print(f"[INFO] No se encontraron caminos entre {inicio.nombre} y {fin.nombre} para el medio: {v.modo}")
         else:
             for c in caminos:
                 nombres_caminos = [nodo.nombre for nodo in c]
@@ -118,6 +121,7 @@ def super_optimizador(vehiculos, inicio, fin):
                 for i in range(len(c) - 1):
                     origen = c[i]
                     destino = c[i + 1]
+
                     # Buscar la conexión correspondiente
                     conexion = next(
                         (con for con in Conexion.conexiones if
@@ -126,14 +130,16 @@ def super_optimizador(vehiculos, inicio, fin):
                          con.modo == v.modo),
                         None
                     )
+
                     if conexion:
                         conexiones_del_camino.append(conexion)
-                    else:
-                        print(f"[ADVERTENCIA] No se encontró conexión entre {origen} y {destino} para {v.modo}")
+#                    else:
+#                        print(f"[ADVERTENCIA] No se encontró conexión entre {origen} y {destino} para {v.modo}")
 
                 todos_los_caminos.append((v.modo, conexiones_del_camino))
-            for modo, camino in todos_los_caminos:
-                print(f"[DEBUGGING] {modo.upper()}: {[f'{c.origen.nombre}->{c.destino.nombre}' for c in camino]}")
+
+#            for modo, camino in todos_los_caminos:
+#                print(f"[DEBUGGING] {modo.upper()}: {[f'{c.origen.nombre}->{c.destino.nombre}' for c in camino]}")
 
     return todos_los_caminos
 

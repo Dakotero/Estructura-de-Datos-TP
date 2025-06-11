@@ -1,7 +1,7 @@
 import csv
 import math
 from Nodo import Nodo 
-from medios_transporte import MedioTransporte, transportes
+from medios_transporte import transportes, MedioTransporte, tipo_conexion
 
 class Conexion():
     conexiones = []
@@ -31,7 +31,7 @@ class Conexion():
                     raise ValueError("El origen o el destino no están entre los nodos")
                 
                 
-                if  fila[2].lower() not in MedioTransporte.tipo_conexion:
+                if  fila[2].lower() not in tipo_conexion:
                     raise ValueError("El modo no esta entre los modos posibles")
                 
                 
@@ -48,14 +48,14 @@ class Conexion():
                 assert isinstance(destino, Nodo)
 
                 
-                modo= fila[2].lower()
+                modo= fila[2].strip().lower()
                 
                 if modo == "ferroviaria": #dejar ferroviariA xq en el archivo de conexiones es femenino
                     modo = transportes['ferroviario']
                 elif modo == "automotor":
                     modo = transportes['automotor']
-                elif modo == "aereo":
-                    modo = transportes['aerea'] #dejar aereA xq en el archivo de conexiones es femenino
+                elif modo == "aerea": #dejar aereA xq en el csv de conexiones es femenino
+                    modo = transportes['aereo'] 
                 elif modo == "fluvial":
                     modo = transportes['fluvial']
                 
@@ -71,15 +71,16 @@ class Conexion():
         transporte = self.modo
         velocidad_transporte = transporte.velocidad_nom_kmh
 
-        if transporte == "aereo":
+        if transporte.modo == "aereo":
             prob_mal_tiempo = float(self.valor_restriccion or 0)
             velocidad_transporte = (transporte.vel_mal_clima_kmh)*(prob_mal_tiempo) + (transporte.velocidad_nom_kmh)*(1-prob_mal_tiempo)
 
         if self.restriccion == 'velocidad_max':
-            vel_max=float(self.valor_restriccion)
+            if self.valor_restriccion:
+                vel_max=float(self.valor_restriccion)
         else:
             vel_max=transporte.velocidad_nom_kmh
-            vel= min(vel_max, velocidad_transporte)
+        vel= min(vel_max, velocidad_transporte)
                 
         tiempo_conexion += self.distancia / vel
         return tiempo_conexion 

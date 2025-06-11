@@ -32,7 +32,7 @@ class Fluvial(MedioTransporte):
 
 class Ferroviario(MedioTransporte):
     def __init__(self, velocidad_nom_kmh, capacidad_kg, costo_fijo, costo_km, costo_kg, costo_tramo_largo):
-        super().__init__( "ferroviario", velocidad_nom_kmh, capacidad_kg, costo_fijo, costo_km, costo_kg)
+        super().__init__("ferroviario", velocidad_nom_kmh, capacidad_kg, costo_fijo, costo_km, costo_kg)
         self.costo_tramo_largo=costo_tramo_largo
         
     def costokm(self, tramo_largo=False): #para afectar el costo_km. depende de conexion
@@ -42,7 +42,7 @@ class Ferroviario(MedioTransporte):
 
 class Automotor(MedioTransporte):
     def __init__(self, velocidad_nom_kmh, capacidad_kg, costo_fijo, costo_km, costo_kg, costo_kg_extra):
-        super().__init__( "automotor", velocidad_nom_kmh, capacidad_kg, costo_fijo, costo_km, costo_kg)
+        super().__init__("automotor", velocidad_nom_kmh, capacidad_kg, costo_fijo, costo_km, costo_kg)
         self.costo_kg_extra = costo_kg_extra
         
     def costokg(self, carga_kg): #afecta el costo por kilogramo (costo_kg). depende de solicitud 
@@ -58,7 +58,8 @@ fluvial = Fluvial(40, 100000, 500, 15, 2, 1500)
 ferroviario = Ferroviario(100, 150000, 100, 20, 3, 15)
 automotor = Automotor(80, 30000, 30, 5, 1, 2)
 
-transportes = {"ferroviario": ferroviario, "automotor": automotor, "aereo": aereo,"fluvial": fluvial}    
+tipo_conexion=['aerea','ferroviaria', 'automotor', 'fluvial']
+transportes = {"ferroviario": ferroviario, "automotor": automotor, "aereo": aereo,"fluvial": fluvial} 
 
 
 #esto lo puse x las dudas pero sirve xq lo vamos a validar en la Redes de transporte. ignorar

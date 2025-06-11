@@ -32,3 +32,4 @@ archivo_nodos = 'nodos.csv'
 Nodo.asignar_nodos(archivo_nodos)
 print(Nodo.nodos)
 '''
+

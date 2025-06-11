@@ -4,7 +4,7 @@ class Nodo():
     nodos = {}
     def __init__(self, nombre):
         self.nombre = nombre
-        self.nodos[nombre] = self
+        Nodo.nodos[nombre] = self
         
     def __str__(self):
         return f"Nodo({self.nombre})"

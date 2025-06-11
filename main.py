@@ -44,6 +44,19 @@ vehiculos = list(transportes.values())
 #for c in Conexion.conexiones:
 #    print(f"Origen: {c.origen.nombre}, Destino: {c.destino.nombre}, Modo: {c.modo}")
 
+
+
+# Paso 2: Ejecutar prueba con primer solicitud
+for solicitud in Solicitud.solicitudes.values():
+    inicio = Nodo.nodos[solicitud.origen]
+    fin = Nodo.nodos[solicitud.destino]
+
+    print(f"\n=== Solución para solicitud {solicitud.id_carga}: {solicitud.origen} -> {solicitud.destino} ===")
+    rutas = super_optimizador(vehiculos, inicio, fin)
+    break  # probá con una sola solicitud
+
+
+'''
 for s in Solicitud.solicitudes.values():
     print(f"\nSolicitud {s.id_carga}: origen= {s.origen}, destino= {s.destino}, carga= {s.peso_kg} kg")
     inicio = Nodo.nodos[s.origen]
@@ -59,3 +72,5 @@ for s in Solicitud.solicitudes.values():
 
 
 #    rutas_chequeadas = super_chequeador()
+
+'''

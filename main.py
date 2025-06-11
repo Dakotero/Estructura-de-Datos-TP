@@ -44,7 +44,13 @@ vehiculos = list(transportes.values())
 #                                       #
 #########################################
 
-
+def convertir_a_objetos_ruta(resultados_optimizador, solicitud):
+    rutas = []
+    for transporte, lista_conexiones in resultados_optimizador:
+        nueva_ruta = Ruta(transporte, solicitud, lista_conexiones)
+        rutas.append(nueva_ruta)
+    return rutas
+    
 for solicitud in Solicitud.solicitudes.values():
     inicio = Nodo.nodos[solicitud.origen]
     fin = Nodo.nodos[solicitud.destino]
@@ -52,17 +58,16 @@ for solicitud in Solicitud.solicitudes.values():
     print(f"\n=== Solución para solicitud {solicitud.id_carga}: {solicitud.origen} -> {solicitud.destino} ===")
 #    super_optimizador(vehiculos, inicio, fin)
     rutas = super_optimizador(vehiculos, inicio, fin)
+    for modo, camino in rutas:
+        print(f"[DEBUG] Ruta generada para {modo.modo}: {len(camino)} tramos.")
+
 #    break  # probár con una sola solicitud
 
+    rutas = convertir_a_objetos_ruta(rutas, solicitud)
 
-
-
-
-
-'''
     for ruta in rutas:
-        tiempo_total = Ruta.calcular_tiempo_ruta(ruta)
-        costo_total = Ruta.calcular_costo_ruta(ruta, s)
-#    rutas_chequeadas = super_chequeador()
+        tiempo_total = ruta.calcular_tiempo_ruta()
+        costo_total = ruta.calcular_costo_ruta(solicitud)
+        print(F'El camino {ruta} tarda {tiempo_total} horas, y cuesta {costo_total} pesos')
+    #    rutas_chequeadas = super_chequeador()
 
-'''

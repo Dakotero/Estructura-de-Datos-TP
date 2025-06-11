@@ -1,7 +1,7 @@
 from Conexion import Conexion
 from Nodo import Nodo
 from medios_transporte import *
-
+from itertools import groupby
 
 ###########################################
 
@@ -25,7 +25,6 @@ class Red_de_Conexiones:
 
 # Ahora, voy a crear una funcion para agregarle a mi red de conexion, todas las conexiones que son de ese tipo de vehiculo
 # Esto lo hago al inicializar la clase Red_de_Conexiones
-
         for conexion in Conexion.conexiones:
 #            print(f"[DEBUG] Revisando conexion: {conexion.origen.nombre} -> {conexion.destino.nombre} con modo {type(conexion.modo)}, {conexion.modo}")
 #            print(f"Modo {conexion.modo.modo} =?= {self.vehiculo.modo}")
@@ -63,7 +62,9 @@ class Red_de_Conexiones:
             else:
                 for conexion in self.caminos.get(nodo_actual, []): 
                     if conexion not in camino:
-                        pila.append((conexion, camino + [conexion]))
+                        nuevo_camino = camino + [conexion]
+                        if len(set(nuevo_camino)) == len(nuevo_camino):  # todos los nodos son únicos
+                            pila.append((conexion, nuevo_camino))
 
         return caminos_finales
 
@@ -85,61 +86,59 @@ def crear_redes_de_conexiones(vehiculos):
 
 # Y ahora funcion para correr el Optimizador
 
-def super_optimizador(vehiculos, inicio, fin):
 
+def super_optimizador(vehiculos, inicio, fin):
     # vehiculos: lista de objetos de subclases de MedioTransporte (cada uno con .modo)
     # inicio, fin: objetos Nodo
-
+    
     if inicio not in Nodo.nodos.values() or fin not in Nodo.nodos.values():
         print(f"[ERROR] El nodo de inicio o fin no existe.")
         return []
 
     todos_los_caminos = []
+    set_rutas_unicas = set()
 
-    for v in vehiculos: # Lo corro una vez por vehiculo existente
-        red = Red_de_Conexiones(v) # Creo la red, al hacer esto, AUTOMATICAMENTE ya completo el diccionario de caminos
+    for v in vehiculos:
+        red = Red_de_Conexiones(v)
 
         if inicio not in red.caminos or fin not in red.caminos:
             print(f"\n[INFO] No hay conexion entre {inicio} y {fin} en red de transporte: ({v.modo})")
-#            print(f"[DEBUG] Caminos para el medio: {v.modo}")
-#            for nodo, vecinos in red.caminos.items():
-#                print(f"[DEBUG] {nodo.nombre}: {[n.nombre for n in vecinos]}")
             continue
 
         print(f"\n[INFO] Buscando caminos para el medio: ({v.modo})")
-        caminos = red.buscar_caminos(inicio, fin)                      # Tengo en caminos la lista de todas las posiblidades
+        caminos = red.buscar_caminos(inicio, fin)
 
         if not caminos:
             print(f"[INFO] No se encontraron caminos entre {inicio.nombre} y {fin.nombre} para el medio: {v.modo}")
-        else:
-            for c in caminos:
-                nombres_caminos = [nodo.nombre for nodo in c]
-                print(f"[RESULTADO - {v.modo}] : {nombres_caminos}")
+            continue
 
-                # Convertir la lista de nodos a lista de conexiones
-                conexiones_del_camino = []
-                for i in range(len(c) - 1):
-                    origen = c[i]
-                    destino = c[i + 1]
+        for c in caminos:
+            nombres_caminos = [n.nombre for n in c]
+            print(f"[RESULTADO - {v.modo}] : {nombres_caminos}")
 
-                    # Buscar la conexión correspondiente
-                    conexion = next(
-                        (con for con in Conexion.conexiones if
-                         ((con.origen == origen and con.destino == destino) or
-                          (con.origen == destino and con.destino == origen)) and
-                         con.modo == v.modo),
-                        None
-                    )
+            conexiones_del_camino = []
+            for i in range(len(c) - 1):
+                origen = c[i]
+                destino = c[i + 1]
+                conexion = next(
+                    (con for con in Conexion.conexiones if
+                     ((con.origen == origen and con.destino == destino) or
+                      (con.origen == destino and con.destino == origen)) and
+                     con.modo.modo == v.modo),
+                    None
+                )
+                if conexion:
+                    conexiones_del_camino.append(conexion)
+                else:
+                    print(f"[ADVERTENCIA] No se encontró conexión entre {origen} y {destino} para {v.modo}")
 
-                    if conexion:
-                        conexiones_del_camino.append(conexion)
-#                    else:
-#                        print(f"[ADVERTENCIA] No se encontró conexión entre {origen} y {destino} para {v.modo}")
-
-                todos_los_caminos.append((v.modo, conexiones_del_camino))
-
-#            for modo, camino in todos_los_caminos:
-#                print(f"[DEBUGGING] {modo.upper()}: {[f'{c.origen.nombre}->{c.destino.nombre}' for c in camino]}")
+            # Verificación final de unicidad (por secuencia de nodos)
+            secuencia_nodos = tuple(n.nombre for n in c)
+            if secuencia_nodos not in set_rutas_unicas:
+                set_rutas_unicas.add(secuencia_nodos)
+                todos_los_caminos.append((v, conexiones_del_camino))
+            else:
+                print(f"[DEBUG] Ruta duplicada detectada: {secuencia_nodos}")
 
     return todos_los_caminos
 
@@ -148,3 +147,58 @@ def super_optimizador(vehiculos, inicio, fin):
 #     ('ferroviario', [Conexion(A→C)]),
 #     ...
 # ]
+
+
+'''
+def super_optimizador(vehiculos, inicio, fin):
+    if inicio not in Nodo.nodos.values() or fin not in Nodo.nodos.values():
+        print(f"[ERROR] El nodo de inicio o fin no existe.")
+        return []
+
+    todos_los_caminos = []
+    set_rutas_unicas = set()
+
+    for v in vehiculos:
+        red = Red_de_Conexiones(v)
+
+        if inicio not in red.caminos or fin not in red.caminos:
+            print(f"\n[INFO] No hay conexión entre {inicio} y {fin} en red de transporte: ({v.modo})")
+            continue
+
+        print(f"\n[INFO] Buscando caminos para el medio: ({v.modo})")
+        caminos = red.buscar_caminos(inicio, fin)
+
+        for c in caminos:
+            # Eliminar nodos consecutivos duplicados (como Buenos_Aires → Buenos_Aires)
+            camino_sin_repetidos = [n for n, _ in groupby(c)]
+
+            # Verificar si el camino es único (por secuencia de nodos)
+            secuencia_nodos = tuple(n.nombre for n in camino_sin_repetidos)
+            if secuencia_nodos in set_rutas_unicas:
+                print(f"[DEBUG] Ruta duplicada detectada: {secuencia_nodos}")
+                continue
+            set_rutas_unicas.add(secuencia_nodos)
+
+            print(f"[OK - {v.modo}] Ruta encontrada: {' → '.join(secuencia_nodos)}")
+
+            conexiones_del_camino = []
+            for i in range(len(camino_sin_repetidos) - 1):
+                origen = camino_sin_repetidos[i]
+                destino = camino_sin_repetidos[i + 1]
+                conexion = next(
+                    (con for con in Conexion.conexiones if
+                     ((con.origen == origen and con.destino == destino) or
+                      (con.origen == destino and con.destino == origen)) and
+                     con.modo.modo == v.modo),
+                    None
+                )
+                if conexion:
+                    conexiones_del_camino.append(conexion)
+                else:
+                    print(f"[ADVERTENCIA] No se encontró conexión entre {origen} y {destino} para {v.modo}")
+
+            todos_los_caminos.append((v, conexiones_del_camino))
+            print(f"[DEBUG] Ruta generada para {v.modo}: {len(conexiones_del_camino)} tramos.")
+
+    return todos_los_caminos
+'''

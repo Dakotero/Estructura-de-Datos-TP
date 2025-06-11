@@ -67,54 +67,57 @@ class Conexion():
                 
 
     def calcular_tiempo_conexion(self):
-        tiempo_conexion = 0
         transporte = self.modo
         velocidad_transporte = transporte.velocidad_nom_kmh
 
         if transporte.modo == "aereo":
             prob_mal_tiempo = float(self.valor_restriccion or 0)
-            velocidad_transporte = (transporte.vel_mal_clima_kmh)*(prob_mal_tiempo) + (transporte.velocidad_nom_kmh)*(1-prob_mal_tiempo)
-
-        if self.restriccion == 'velocidad_max':
-            if self.valor_restriccion:
-                vel_max=float(self.valor_restriccion)
+            velocidad_transporte = (
+                transporte.vel_mal_clima_kmh * prob_mal_tiempo +
+                transporte.velocidad_nom_kmh * (1 - prob_mal_tiempo)
+            )
+        if self.restriccion == 'velocidad_max' and self.valor_restriccion:
+            vel_max = float(self.valor_restriccion)
         else:
-            vel_max=transporte.velocidad_nom_kmh
-        vel= min(vel_max, velocidad_transporte)
-                
-        tiempo_conexion += self.distancia / vel
-        return tiempo_conexion 
+            vel_max = transporte.velocidad_nom_kmh
+        vel = min(vel_max, velocidad_transporte)
+
+        return self.distancia / vel
     
             
     def calcular_costo_conexion(self, solicitud):
+
         transporte = self.modo
-        cantidad = math.ceil(solicitud.peso_kg / transporte.capacidad_kg)
+        carga_total = solicitud.peso_kg
+        capacidad = transporte.capacidad_kg
+        cantidad = math.ceil(carga_total / capacidad)
         costo_conexion = 0
+
         if transporte.modo == "automotor":
-            costo_conexion += transporte.costo_fijo*cantidad
-            costo_conexion += (transporte.costo_km * self.distancia)*cantidad
-            costo_conexion += (transporte.costokg(solicitud.peso_kg) * solicitud.peso_kg)*cantidad
+            costo_conexion += transporte.costo_fijo * cantidad
+            costo_conexion += transporte.costo_km * self.distancia * cantidad
+            costo_conexion += transporte.costokg(carga_total) * carga_total * cantidad
 
         elif transporte.modo == "ferroviario":
-            costo_conexion += transporte.costo_fijo*cantidad
-            tramo_largo = self.distancia >= 200*cantidad
-            costo_conexion += (transporte.costokm(tramo_largo) * self.distancia)*cantidad
-            costo_conexion += (transporte.costo_kg * solicitud.peso_kg)*cantidad
-                
-        elif transporte.modo == "fluvial":
-            tipo_tramo = self.valor_restriccion
-            costo_fijo_real = transporte.costofijo(tasa_maritima=(tipo_tramo == "maritimo"))
-            costo_conexion += costo_fijo_real*cantidad
-            costo_conexion += (transporte.costo_km * self.distancia)*cantidad
-            costo_conexion += (transporte.costo_kg * solicitud.peso_kg)*cantidad
-            
-        elif transporte.modo == "aereo":
-            costo_conexion += transporte.costo_fijo*cantidad
-            costo_conexion += (transporte.costo_km * self.distancia)*cantidad
-            costo_conexion += (transporte.costo_kg * solicitud.peso_kg)*cantidad
-        return costo_conexion
-        
+            costo_conexion += transporte.costo_fijo * cantidad
+            tramo_largo = self.distancia >= 200
+            costo_conexion += transporte.costokm(tramo_largo) * self.distancia * cantidad
+            costo_conexion += transporte.costo_kg * carga_total * cantidad
 
+        elif transporte.modo == "fluvial":
+            tipo_tramo = (self.valor_restriccion or "").strip().lower()
+            es_maritimo = tipo_tramo == "maritimo"
+            costo_fijo_real = transporte.costofijo(tasa_maritima=es_maritimo)
+            costo_conexion += costo_fijo_real * cantidad
+            costo_conexion += transporte.costo_km * self.distancia * cantidad
+            costo_conexion += transporte.costo_kg * carga_total * cantidad
+
+        elif transporte.modo == "aereo":
+            costo_conexion += transporte.costo_fijo * cantidad
+            costo_conexion += transporte.costo_km * self.distancia * cantidad
+            costo_conexion += transporte.costo_kg * carga_total * cantidad
+
+        return costo_conexion
 
 '''                
 archivo = 'conexiones.csv'

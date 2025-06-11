@@ -12,17 +12,32 @@ class Ruta():
         self.costo_total = 0
         self.tiempo_total = 0
         
+    def __str__(self):
+
+        if not self.conexiones:
+            return f"por {self.transporte.modo} no existe"
+
+        nodos = [self.conexiones[0].origen.nombre]  # arranco con el primer origen
+        for conexion in self.conexiones:
+            nodos.append(conexion.destino.nombre)  # agrego cada destino en orden
+
+        texto = f"por {self.transporte.modo}:\n  " + " → ".join(nodos)
+        return texto
+
+    def __repr__(self):
+        return self.__str__()
+        
         
     def calcular_tiempo_ruta(self):
         tiempo_total = 0
         for conexion in self.conexiones:
-                tiempo_total += Conexion.calcular_tiempo_conexion(conexion)
+            tiempo_total += conexion.calcular_tiempo_conexion()
         return tiempo_total
                 
     def calcular_costo_ruta(self, solicitud):
         costo_total = 0
         for conexion in self.conexiones:
-            costo_total += Conexion.calcular_costo_conexion(conexion, solicitud)
+            costo_total += conexion.calcular_costo_conexion(solicitud)
         return costo_total
 
 

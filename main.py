@@ -71,3 +71,52 @@ for solicitud in Solicitud.solicitudes.values():
         print(F'El camino {ruta} tarda {tiempo_total} horas, y cuesta {costo_total} pesos')
     #    rutas_chequeadas = super_chequeador()
 
+def mostrar_ruta_mas_rapida(rutas, solicitud):
+    if not rutas:
+        print("No hay rutas disponibles.")
+        return
+
+    # Buscar la ruta de menor tiempo
+    ruta_mas_rapida = rutas[0]
+    tiempo_minimo = ruta_mas_rapida.calcular_tiempo_ruta()
+
+    for ruta in rutas[1:]:
+        tiempo = ruta.calcular_tiempo_ruta()
+        if tiempo < tiempo_minimo:
+            tiempo_minimo = tiempo
+            ruta_mas_rapida = ruta
+
+    # Mostrar detalles
+    costo_total = ruta_mas_rapida.calcular_costo_ruta(solicitud)
+    print("\n Ruta más rápida")
+    print(f"{ruta_mas_rapida}")  
+    print(f"Tiempo total: {tiempo_minimo:.2f} horas")
+    print(f"Costo total: {costo_total:.2f} pesos")
+
+mostrar_ruta_mas_rapida(rutas, solicitud)
+
+def mostrar_ruta_mas_economica(rutas):
+    if not rutas:
+        print("No hay rutas disponibles.")
+        return
+
+    ruta_mas_economica = rutas[0]
+    costo_minimo = ruta_mas_economica.calcular_costo_ruta(ruta_mas_economica.solicitud)
+
+    for ruta in rutas[1:]:
+        costo = ruta.calcular_costo_ruta(ruta.solicitud)
+        if costo < costo_minimo:
+            costo_minimo = costo
+            ruta_mas_economica = ruta
+
+    print("\nRuta más económica")
+    print(f"{ruta_mas_economica}")  
+    print(f"Tiempo total: {tiempo_total:.2f} horas")
+    print(f"Costo total: {costo_minimo:.2f} pesos")
+    
+
+mostrar_ruta_mas_economica(rutas)
+
+
+# Luego de mostrar la ruta mas rapida y la mas economica, es necesario borrar las rutas actuales para iniciar de 0 en la proxima solicitud
+rutas.clear()

@@ -94,9 +94,21 @@ class Conexion():
         costo_conexion = 0
 
         if transporte.modo == "automotor":
-            costo_conexion += transporte.costo_fijo * cantidad
-            costo_conexion += transporte.costo_km * self.distancia * cantidad
-            costo_conexion += transporte.costokg(carga_total) * carga_total * cantidad
+            cantidad_completa = carga_total // capacidad
+            carga_restante = carga_total % capacidad
+
+            for i in range(cantidad_completa):
+                costo_por_kg = transporte.costokg(capacidad)  # costo según carga completa
+                costo_conexion += transporte.costo_fijo
+                costo_conexion += transporte.costo_km * self.distancia
+                costo_conexion += costo_por_kg * capacidad
+
+        # costo vehículo con carga restante (parcial)
+            if carga_restante > 0:
+               costo_por_kg = transporte.costokg(carga_restante)  # costo según carga restante
+               costo_conexion += transporte.costo_fijo
+               costo_conexion += transporte.costo_km * self.distancia
+               costo_conexion += costo_por_kg * carga_restante
 
         elif transporte.modo == "ferroviario":
             costo_conexion += transporte.costo_fijo * cantidad

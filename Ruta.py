@@ -4,24 +4,36 @@ from Conexion import Conexion
 from Solicitud import Solicitud
 
 class Ruta():
-    rutas = [] #no se para que guardamos esta lista todavia, vemos si la sacamos a futuro
-    def __init__(self, transporte, solicitud, conexiones): #solicitud tiene que ser el objeto (instancia) de solicitud, conexiones es una lista de objetos conexion
+    contadorID = 1
+    def __init__(self, transporte, solicitud, conexiones, nodos): #solicitud tiene que ser el objeto (instancia) de solicitud, conexiones es una lista de objetos conexion
+
+        self.id = Ruta.contadorID
+        Ruta.contadorID += 1
+
         self.transporte = transporte
         self.solicitud = solicitud
         self.conexiones = conexiones
         self.costo_total = 0
         self.tiempo_total = 0
-        
+        self.nodos = nodos
+
     def __str__(self):
 
         if not self.conexiones:
-            return f"por {self.transporte.modo} no existe"
+            return f"[PROBLEMA] {self.transporte} no existe"
 
-        nodos = [self.conexiones[0].origen.nombre]  # arranco con el primer origen
-        for conexion in self.conexiones:
-            nodos.append(conexion.destino.nombre)  # agrego cada destino en orden
+        texto = f"\n[RUTA #{self.id}] Transporte: {self.transporte}"
+        # texto += f"\n[CONEXIONES] (bidireccionales):"
+        # for conexion in self.conexiones:
+        #     texto += f"\n  {conexion.origen.nombre} -> {conexion.destino.nombre}"
+        
+        nombres_nodos = [nodo.nombre for nodo in self.nodos]
+        texto += f"\n[NODOS]: {' -> '.join(nombres_nodos)}"
+        self.tiempo_total = self.calcular_tiempo_ruta()
+        self.costo_total = self.calcular_costo_ruta(self.solicitud)
+        texto += f"\n[DURACION]: {self.tiempo_total:.1f} horas"
+        texto += f"\n[COSTO]: {self.costo_total:.0f} $"
 
-        texto = f"por {self.transporte.modo}:\n  " + " → ".join(nodos)
         return texto
 
     def __repr__(self):
@@ -39,6 +51,15 @@ class Ruta():
         for conexion in self.conexiones:
             costo_total += conexion.calcular_costo_conexion(solicitud)
         return costo_total
+
+
+def convertir_a_objetos_ruta(tupla_modo_conexiones, solicitud, tupla_modo_nodos):
+    rutas = []
+    for (transporte, lista_conexiones), (_, lista_nodos) in zip(tupla_modo_conexiones, tupla_modo_nodos):
+        nueva_ruta = Ruta(transporte, solicitud, lista_conexiones, lista_nodos)
+        rutas.append(nueva_ruta)
+    return rutas
+
 
 
 

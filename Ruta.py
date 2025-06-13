@@ -2,6 +2,7 @@
 import math
 from Conexion import Conexion
 from Solicitud import Solicitud
+from medios_transporte import transportes
 
 class Ruta():
     contadorID = 1
@@ -20,19 +21,22 @@ class Ruta():
     def __str__(self):
 
         if not self.conexiones:
-            return f"[PROBLEMA] {self.transporte} no existe"
+            return f"No hay conexiones para transporte ({self.transporte})"
 
-        texto = f"\n[RUTA #{self.id}] Transporte: {self.transporte}"
-        # texto += f"\n[CONEXIONES] (bidireccionales):"
-        # for conexion in self.conexiones:
-        #     texto += f"\n  {conexion.origen.nombre} -> {conexion.destino.nombre}"
-        
-        nombres_nodos = [nodo.nombre for nodo in self.nodos]
-        texto += f"\n[NODOS]: {' -> '.join(nombres_nodos)}"
-        self.tiempo_total = self.calcular_tiempo_ruta()
-        self.costo_total = self.calcular_costo_ruta(self.solicitud)
-        texto += f"\n[DURACION]: {self.tiempo_total:.1f} horas"
-        texto += f"\n[COSTO]: {self.costo_total:.0f} $"
+        nodos = [self.conexiones[0].origen] + [c.destino for c in self.conexiones]
+        nombres_nodos = [n.nombre for n in nodos]
+
+        tiempo_total = self.calcular_tiempo_ruta()
+        costo_total = self.calcular_costo_ruta(self.solicitud)
+
+        texto = f"\nTransporte: {self.transporte}"
+        texto += f"\nRecorrido: {' → '.join(nombres_nodos)}"
+        #si queremos el tiempo en horas, minutos y segundos:
+        texto += f"\nDuración: {int(tiempo_total)}h {int((tiempo_total % 1) * 60)}m {int((((tiempo_total % 1) * 60) % 1) * 60)}s"
+        #si queremos el tiempo en horas decimales:
+        #texto += f"\nDuración: {tiempo_total:.2f} horas" 
+        texto += f"\nCosto total: ${costo_total:,.2f}"
+
 
         return texto
 
@@ -50,6 +54,24 @@ class Ruta():
         costo_total = 0
         for conexion in self.conexiones:
             costo_total += conexion.calcular_costo_conexion(solicitud)
+
+        transporte = transportes[self.transporte]
+        carga_total = solicitud.peso_kg
+
+        if transporte.modo == "automotor":
+            capacidad = transporte.capacidad_kg
+            cantidad_completa = carga_total // capacidad
+            carga_restante = carga_total % capacidad
+
+            for _ in range(cantidad_completa):
+                costo_total += transporte.costokg(capacidad) * capacidad
+
+            if carga_restante > 0:
+                costo_total += transporte.costokg(carga_restante) * carga_restante
+
+        else:
+            costo_total += transporte.costo_kg * carga_total
+
         return costo_total
 
 

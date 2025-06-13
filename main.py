@@ -89,9 +89,9 @@ for solicitud in Solicitud.solicitudes.values():
 
     print(F'\n === Mejores rutas para la solicitud {solicitud.id_carga} ===\n')
 
-    mostrar_ruta_mas_rapida(rutas, solicitud)
+    mostrar_ruta_mas_rapida(rutas)
 
-    mostrar_ruta_mas_economica(rutas)
+    mostrar_ruta_mas_economica(rutas, solicitud)
 
 #     # Luego de mostrar la ruta mas rapida y la mas economica, es necesario borrar las rutas actuales para iniciar de 0 en la proxima solicitud
 #     rutas.clear()

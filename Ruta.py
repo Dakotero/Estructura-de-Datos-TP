@@ -17,6 +17,7 @@ class Ruta():
         self.costo_total = 0
         self.tiempo_total = 0
         self.nodos = nodos
+        self.cantidad_a_utilizar = 0
 
     def __str__(self):
 
@@ -36,13 +37,19 @@ class Ruta():
         #si queremos el tiempo en horas decimales:
         #texto += f"\nDuración: {tiempo_total:.2f} horas" 
         texto += f"\nCosto total: ${costo_total:,.2f}"
+        texto += f"\nCantidad de transportes: {self.cantidad_a_utilizar}"
 
 
         return texto
 
     def __repr__(self):
         return self.__str__()
-        
+    
+    def calcular_cantidad(self):
+        for conexion in self.conexiones:
+            cantidad=conexion.calcular_cantidad()
+            if cantidad>self.cantidad_a_utilizar:
+                self.cantidad_a_utilizar=cantidad    
         
     def calcular_tiempo_ruta(self):
         tiempo_total = 0

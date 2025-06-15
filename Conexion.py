@@ -84,6 +84,14 @@ class Conexion():
 
         return self.distancia / vel
     
+    def calcular_cantidad(self, solicitud):
+        transporte = self.modo
+        carga_total = solicitud.peso_kg
+        capacidad = transporte.capacidad_kg
+        if self.restriccion=='peso_max' and capacidad>self.valor_restriccion:
+            return(math.ceil(carga_total / self.valor_restriccion))
+        else:
+            return(math.ceil(carga_total / capacidad))
                 
     def calcular_costo_conexion(self, solicitud):
         transporte = self.modo

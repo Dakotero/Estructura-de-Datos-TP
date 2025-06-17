@@ -69,6 +69,8 @@ for solicitud in Solicitud.solicitudes.values():
 #########################################################
 
     rutas = convertir_a_objetos_ruta(tupla_modo_conexiones, solicitud, tupla_modo_nodos)
+    for ruta in rutas:
+        ruta.calcular_cantidad()
 
 ########## MOSTRAR RUTAS ##########
 

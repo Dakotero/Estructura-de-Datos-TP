@@ -1,3 +1,6 @@
+from graficador_belu import *
+from Graficador import *
+
 def mostrar_ruta_mas_rapida(rutas):
     if not rutas:
         print("No hay rutas disponibles.")
@@ -16,6 +19,9 @@ def mostrar_ruta_mas_rapida(rutas):
     # Mostrar detalles
     print("\n[RESULTADO] Ruta más rápida")
     print(f"{ruta_mas_rapida}")  
+    
+    graficar_itinerario(ruta_mas_rapida)
+    graficador_conexion_vs_tiempo(ruta_mas_rapida)
 
 
 def mostrar_ruta_mas_economica(rutas, solicitud):

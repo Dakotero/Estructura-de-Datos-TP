@@ -23,40 +23,62 @@ class CLI:
 ###################################################################################
 
             while True:
-                print("\n~~~ Carga de datos ~~~")
-                print("Empezamos cargando los datos necesarios")
+                try:
+                    print("\n~~~ Carga de datos ~~~")
+                    print("Empezamos cargando los datos necesarios")
 
-                print("\n~~~ NODOS ~~~")
-                print("Como se llama el csv de los nodos?")
-                print("a. nodos.csv")
-                print("b. distinto")
-                opcion = input("\n[Menu] Seleccione una opción: ").strip().lower()
+                    print("\n~~~ NODOS ~~~")
+                    print("Como se llama el csv de los nodos?")
+                    print("a. nodos.csv")
+                    print("b. distinto")
+                    opcion = input("\n[Menu] Seleccione una opción: ").strip().lower()
 
-                if opcion == "a":
-                    print("\n[Menu] Cargando nodos desde nodos.csv...")
+                    if opcion == "a":
+                        print("\n[Menu] Cargando nodos desde nodos.csv...")
+                        time.sleep(0.5)
+                        
+                        archivo_nodos = 'nodos.csv'
+                        Nodo.asignar_nodos(archivo_nodos)
+                        print("[Menu] Nodos cargados correctamente.")
+
+                        break
+
+                    elif opcion == "b":
+                        print("\n[Menu] Como se llama el csv de los nodos?")
+                        print("[Menu] No incluir la extension .csv")
+                        nombre_nodoscsv = input("[Menu] Ingrese el nombre del archivo: ").strip()
+
+
+                        if nombre_nodoscsv.strip() == "":
+                            raise ValueError("El nombre del archivo de nodos no puede estar vacío.")
+                        if nombre_nodoscsv.endswith(".csv"):
+                            raise ValueError("El nombre del archivo de nodos no debe contener la extensión '.csv'.")
+                        print(f"\n[Menu] Cargando nodos desde {nombre_nodoscsv}.csv...")
+                        time.sleep(0.5)
+
+                        archivo_nodos = f"{nombre_nodoscsv}.csv"
+                        Nodo.asignar_nodos(archivo_nodos)
+                        print("[Menu] Nodos cargados correctamente.")
+
+                        break
+
+                    else:
+                        print("[Menu] Opción no válida. Intenta nuevamente.")
+                
+                # Verifico POR:
+                # 1. El nombre del csv no este vacio
+                # 2. No pongan el nombre con .csv
+                # 3. Exista un header no nulo que sea en lower.strip "nombre"
+                # 4. No haya un Nodo nulo o vacio
+                # En cambio, nodos duplicados, solo se arreglan "ignorandolos"
+                except ValueError as e:
+                    print(f"[CLI] ValueError: {e}")
                     time.sleep(0.5)
-                    
-                    archivo_nodos = 'nodos.csv'
-                    Nodo.asignar_nodos(archivo_nodos)
-                    print("[Menu] Nodos cargados correctamente.")
-
-                    break
-
-                elif opcion == "b":
-                    print("\n[Menu] Como se llama el csv de los nodos?")
-                    print("[Menu] No incluir la extension .csv")
-                    nombre_nodoscsv = input("[Menu] Ingrese el nombre del archivo: ").strip()
-                    print(f"\n[Menu] Cargando nodos desde {nombre_nodoscsv}.csv...")
+                except Exception as e:
+                    print(f"[CLI] Error al cargar los nodos: {e}")
+                    print("[CLI] Asegúrate de que el archivo CSV esté en el formato correcto.")
                     time.sleep(0.5)
 
-                    archivo_nodos = f"{nombre_nodoscsv}.csv"
-                    Nodo.asignar_nodos(archivo_nodos)
-                    print("[Menu] Nodos cargados correctamente.")
-
-                    break
-
-                else:
-                    print("[Menu] Opción no válida. Intenta nuevamente.")
             time.sleep(1)
 
 ###################################################################################

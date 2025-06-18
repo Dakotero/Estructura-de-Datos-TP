@@ -22,9 +22,13 @@ class Nodo():
     def asignar_nodos(cls, archivo_nodos):
         with open(archivo_nodos, 'r') as f:
             lector = csv.reader(f)
-            next(lector)
+            header = next(lector, None)
+            if header is None or len(header) == 0 or header[0].lower().strip() != "nombre":
+                raise ValueError("El archivo de nodos debe tener una cabecera con el nombre 'nombre'.")
             for fila in lector:
-                if fila[0] not in cls.nodos:  # Verifica si el nodo ya existe:
+                if fila[0] == "":
+                    raise ValueError("El nombre de uno de los nodos esta vacio.")
+                elif fila[0] not in cls.nodos:  # Verifica si el nodo ya existe:
                     Nodo(fila[0])
                 
 '''                

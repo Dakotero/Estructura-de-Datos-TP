@@ -38,32 +38,38 @@ class Red_de_Conexiones:
 # Hago la funcion agregar conexion, donde confirmo nada se duplique, y que sea BIDIRECCIONAL
 
     def agregar_conexion(self, nodo1, nodo2):
-        if nodo1 not in self.caminos:
-            self.caminos[nodo1] = []
-        if nodo2 not in self.caminos:
-            self.caminos[nodo2] = []
-        if nodo2 not in self.caminos[nodo1]:
-            self.caminos[nodo1].append(nodo2)
-        if nodo1 not in self.caminos[nodo2]:
-            self.caminos[nodo2].append(nodo1)
+        try:
+            if nodo1 not in self.caminos:
+                self.caminos[nodo1] = []
+            if nodo2 not in self.caminos:
+                self.caminos[nodo2] = []
+            if nodo2 not in self.caminos[nodo1]:
+                self.caminos[nodo1].append(nodo2)
+            if nodo1 not in self.caminos[nodo2]:
+                self.caminos[nodo2].append(nodo1)
+        except (ValueError, TypeError) as e:
+            raise ValueError(f"Hubo un problema en el optimizador, creando las tuplas de nodos y sus vecinos. \nMas detalles: {e}")
 
 ###########################################
 
 # Ahora, una lista de todos los posibles caminos SIN VALIDAR RESTRICCIONES DE NINGUN TIPO, SOLO POR CAMINO
 
     def buscar_caminos(self, inicio, fin):
-        pila = [(inicio, [inicio])]  # Pila con (nodo_actual, camino_actual)
-        caminos_finales = []
+        try:
+            pila = [(inicio, [inicio])]  # Pila con (nodo_actual, camino_actual)
+            caminos_finales = []
 
-        while pila:
-            nodo_actual, camino = pila.pop() # Elimino y agarro el ultimo
+            while pila:
+                nodo_actual, camino = pila.pop() # Elimino y agarro el ultimo
 
-            if nodo_actual == fin:
-                caminos_finales.append(camino)
-            else:
-                for conexion in self.caminos.get(nodo_actual, []): 
-                    if conexion not in camino:
-                        pila.append((conexion, camino + [conexion]))
+                if nodo_actual == fin:
+                    caminos_finales.append(camino)
+                else:
+                    for conexion in self.caminos.get(nodo_actual, []): 
+                        if conexion not in camino:
+                            pila.append((conexion, camino + [conexion]))
+        except (ValueError, TypeError) as e:
+            raise ValueError(f"Hubo un problema en el optimizador, buscando todos los caminos posibles. \nMas detalles: {e}")
 
         return caminos_finales
 
@@ -87,58 +93,61 @@ def crear_redes_de_conexiones(vehiculos):
 
 def super_optimizador(vehiculos, inicio, fin):
 
+    try:
     # vehiculos: lista de objetos de subclases de MedioTransporte (cada uno con .modo)
     # inicio, fin: objetos Nodo
 
-    if inicio not in Nodo.nodos.values() or fin not in Nodo.nodos.values():
-        print(f"[ERROR] El nodo de inicio o fin no existe.")
-        return []
+        if inicio not in Nodo.nodos.values() or fin not in Nodo.nodos.values():
+            print(f"[ERROR] El nodo de inicio o fin no existe.")
+            return []
 
-    tupla_modo_conexiones = []
-    tupla_modo_nodos = []
+        tupla_modo_conexiones = []
+        tupla_modo_nodos = []
 
-    for v in vehiculos: # Lo corro una vez por vehiculo existente
-        red = Red_de_Conexiones(v) # Creo la red, al hacer esto, AUTOMATICAMENTE ya completo el diccionario de caminos
+        for v in vehiculos: # Lo corro una vez por vehiculo existente
+            red = Red_de_Conexiones(v) # Creo la red, al hacer esto, AUTOMATICAMENTE ya completo el diccionario de caminos
 
-        if inicio not in red.caminos or fin not in red.caminos:
-#            print(f"\n[INFO] No hay conexion entre {inicio} y {fin} en red de transporte: ({v.modo})")
-#            print(f"[DEBUG] Caminos para el medio: {v.modo}")
-#            for nodo, vecinos in red.caminos.items():
-#                print(f"[DEBUG] {nodo.nombre}: {[n.nombre for n in vecinos]}")
-            continue
+            if inicio not in red.caminos or fin not in red.caminos:
+    #            print(f"\n[INFO] No hay conexion entre {inicio} y {fin} en red de transporte: ({v.modo})")
+    #            print(f"[DEBUG] Caminos para el medio: {v.modo}")
+    #            for nodo, vecinos in red.caminos.items():
+    #                print(f"[DEBUG] {nodo.nombre}: {[n.nombre for n in vecinos]}")
+                continue
 
-#        print(f"\n[INFO] Buscando caminos para el medio: ({v.modo})")
-        caminos = red.buscar_caminos(inicio, fin)                      # Tengo en caminos la lista de todas las posiblidades
+    #        print(f"\n[INFO] Buscando caminos para el medio: ({v.modo})")
+            caminos = red.buscar_caminos(inicio, fin)                      # Tengo en caminos la lista de todas las posiblidades
 
-        if not caminos:
-            print(f"[INFO] No se encontraron caminos entre {inicio.nombre} y {fin.nombre} para el medio: {v.modo}")
-        else:
-            for c in caminos:
-                nombres_caminos = [nodo.nombre for nodo in c]
-#                print(f"[RESULTADO - {v.modo}] : {nombres_caminos}")
+            if not caminos:
+                print(f"[INFO] No se encontraron caminos entre {inicio.nombre} y {fin.nombre} para el medio: {v.modo}")
+            else:
+                for c in caminos:
+    #                nombres_caminos = [nodo.nombre for nodo in c]
+    #                print(f"[RESULTADO - {v.modo}] : {nombres_caminos}")
 
-                # Convertir la lista de nodos a lista de conexiones
-                conexiones_del_camino = []
-                for i in range(len(c) - 1):
-                    origen = c[i]
-                    destino = c[i + 1]
+                    # Convertir la lista de nodos a lista de conexiones
+                    conexiones_del_camino = []
+                    for i in range(len(c) - 1):
+                        origen = c[i]
+                        destino = c[i + 1]
 
-                    # Buscar la conexión correspondiente
-                    conexion = next(
-                        (con for con in Conexion.conexiones if
-                         ((con.origen == origen and con.destino == destino) or
-                          (con.origen == destino and con.destino == origen)) and
-                         modo_str(con.modo) == modo_str(v.modo)),
-                        None
-                    )
+                        # Buscar la conexión correspondiente
+                        conexion = next(
+                            (con for con in Conexion.conexiones if
+                            ((con.origen == origen and con.destino == destino) or
+                            (con.origen == destino and con.destino == origen)) and
+                            modo_str(con.modo) == modo_str(v.modo)),
+                            None
+                        )
 
-                    if conexion:
-                        conexiones_del_camino.append(conexion)
-                    else:
-                        print(f"[ADVERTENCIA] No se encontró conexión entre {origen} y {destino} para {v.modo}")
+                        if conexion:
+                            conexiones_del_camino.append(conexion)
+                        else:
+                            print(f"[ADVERTENCIA] No se encontró conexión entre {origen} y {destino} para {v.modo}")
 
-                tupla_modo_conexiones.append((v.modo, conexiones_del_camino))
-                tupla_modo_nodos.append((v.modo, c))
+                    tupla_modo_conexiones.append((v.modo, conexiones_del_camino))
+                    tupla_modo_nodos.append((v.modo, c))
+    except (ValueError, TypeError) as e:
+        raise ValueError(f"Hubo un problema corriendo el super_optimizador. Revisar datos \nMas detalles: {e}")
 
     return tupla_modo_conexiones, tupla_modo_nodos
 

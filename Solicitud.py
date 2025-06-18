@@ -28,7 +28,10 @@ class Solicitud:
                 if len(fila) < 4:
                     raise ValueError("Falta información en la fila del archivo de pedidos.")
                 id_carga = fila[0].strip()
-                peso_kg = int(fila[1].strip())
+                try:
+                    peso_kg = int(fila[1].strip())
+                except (ValueError, TypeError):
+                    raise ValueError(f"Uno de los pesos_kg no se pudo transformar a entero.")
                 origen = fila[2].strip()
                 destino = fila[3].strip()
                 

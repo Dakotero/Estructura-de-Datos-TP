@@ -41,6 +41,8 @@ class CLI:
                         
                         archivo_nodos = 'nodos.csv'
                         Nodo.asignar_nodos(archivo_nodos)
+                        if not Nodo.nodos:
+                            raise ValueError("No se encontraron nodos en el archivo")
                         print("[Menu] Nodos cargados correctamente.")
 
                         break
@@ -61,6 +63,8 @@ class CLI:
 
                         archivo_nodos = f"{nombre_nodoscsv}.csv"
                         Nodo.asignar_nodos(archivo_nodos)
+                        if not Nodo.nodos:
+                            raise ValueError("No se encontraron nodos en el archivo")
                         print("[Menu] Nodos cargados correctamente.")
 
                         break
@@ -74,6 +78,7 @@ class CLI:
                 # 3. Exista un header no nulo que sea en lower.strip "nombre"
                 # 4. No haya un Nodo nulo o vacio
                 # En cambio, nodos duplicados, se arreglan solos "ignorando" el segundo
+                # 5. Que no hayan 0 nodos
                 except ValueError as e:
                     print(f"[CLI] ValueError: {e}")
                     time.sleep(1)
@@ -100,6 +105,8 @@ class CLI:
 
                         archivo_conexiones = 'conexiones.csv'
                         Conexion.asignar_conexion(archivo_conexiones)
+                        if not Conexion.conexiones:
+                            raise ValueError("No se encontraron conexiones en el archivo")
                         print("[Menu] Conexiones cargadas correctamente.")
 
                         break
@@ -119,6 +126,8 @@ class CLI:
 
                         archivo_conexiones = f"{nombre_conexionescsv}.csv"
                         Conexion.asignar_conexion(archivo_conexiones)
+                        if not Conexion.conexiones:
+                            raise ValueError("No se encontraron conexiones en el archivo")
                         print("[Menu] Conexiones cargadas correctamente.")
                         break
 
@@ -132,6 +141,7 @@ class CLI:
                 # 4. Los nodos origen y destino entren entre los nodos cargados
                 # 5. Los nodos origen y destino no sean el mismo
                 # 6. Exista el header, no sea nulo, y sea lo que esperamos
+                # 7. Que no hayan 0 conexiones
                 except ValueError as e:
                     print(f"[CLI] ValueError: {e}")
                     time.sleep(1)
@@ -158,8 +168,9 @@ class CLI:
 
                         archivo_solicitudes = 'solicitudes.csv'
                         Solicitud.asignar_solicitudes(archivo_solicitudes)
+                        if len(Solicitud.solicitudes) == 0:
+                            raise ValueError("No se encontraron solicitudes en el archivo")
                         print("[Menu] Solicitudes cargadas correctamente.")
-
                         break
 
                     elif opcion == "b":
@@ -177,6 +188,8 @@ class CLI:
 
                         archivo_solicitudes = f"{nombre_solicitudescsv}.csv"
                         Solicitud.asignar_solicitudes(archivo_solicitudes)
+                        if len(Solicitud.solicitudes) == 0:
+                            raise ValueError("No se encontraron solicitudes en el archivo")
                         print("[Menu] Solicitudes cargadas correctamente.")
                         break
 
@@ -190,6 +203,8 @@ class CLI:
                 # 4. No esten duplicados los ID de solicitud
                 # 5. Origen y Destino existan como nodo
                 # 6. Exista el header, no sea nulo, y sea lo que esperamos
+                # 7. Peso_kg pueda convertirse a entero
+                # 8. No haya 0 solicitudes
                 except ValueError as e:
                     print(f"[CLI] ValueError: {e}")
                     time.sleep(1)

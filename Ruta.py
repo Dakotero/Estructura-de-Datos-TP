@@ -46,10 +46,13 @@ class Ruta():
         return self.__str__()
     
     def calcular_cantidad(self):
-        for conexion in self.conexiones:
-            cantidad=conexion.calcular_cantidad(self.solicitud)
-            if cantidad>self.cantidad_a_utilizar:
-                self.cantidad_a_utilizar=cantidad    
+        try:
+            for conexion in self.conexiones:
+                cantidad=conexion.calcular_cantidad(self.solicitud)
+                if cantidad>self.cantidad_a_utilizar:
+                    self.cantidad_a_utilizar=cantidad    
+        except (ValueError, TypeError) as e:
+            raise ValueError(f"Hubo un problema calculando la cantidad de transportes necesarios. \nMas detalles: {e}")
         
     def calcular_tiempo_ruta(self):
         tiempo_total = 0
@@ -84,13 +87,15 @@ class Ruta():
 
 def convertir_a_objetos_ruta(tupla_modo_conexiones, solicitud, tupla_modo_nodos):
     rutas = []
+    try:
+        for i in range(len(tupla_modo_conexiones)):
+            transporte = tupla_modo_conexiones[i][0]
+            lista_conexiones = tupla_modo_conexiones[i][1]
+            lista_nodos = tupla_modo_nodos[i][1]
 
-    for i in range(len(tupla_modo_conexiones)):
-        transporte = tupla_modo_conexiones[i][0]
-        lista_conexiones = tupla_modo_conexiones[i][1]
-        lista_nodos = tupla_modo_nodos[i][1]
-
-        nueva_ruta = Ruta(transporte, solicitud, lista_conexiones, lista_nodos)
-        rutas.append(nueva_ruta)
+            nueva_ruta = Ruta(transporte, solicitud, lista_conexiones, lista_nodos)
+            rutas.append(nueva_ruta)
+    except (ValueError, TypeError) as e:
+        raise ValueError(f"Hubo un problema transformando los resultados del optimizador en Rutas. \nMas detalles: {e}")
 
     return rutas

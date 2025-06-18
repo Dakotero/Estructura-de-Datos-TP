@@ -101,7 +101,7 @@ def super_optimizador(vehiculos, inicio, fin):
         red = Red_de_Conexiones(v) # Creo la red, al hacer esto, AUTOMATICAMENTE ya completo el diccionario de caminos
 
         if inicio not in red.caminos or fin not in red.caminos:
-            print(f"\n[INFO] No hay conexion entre {inicio} y {fin} en red de transporte: ({v.modo})")
+#            print(f"\n[INFO] No hay conexion entre {inicio} y {fin} en red de transporte: ({v.modo})")
 #            print(f"[DEBUG] Caminos para el medio: {v.modo}")
 #            for nodo, vecinos in red.caminos.items():
 #                print(f"[DEBUG] {nodo.nombre}: {[n.nombre for n in vecinos]}")

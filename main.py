@@ -1,101 +1,46 @@
-#aca lo q agregue yo (belu) esta en proceso: 
+import time
+import subprocess
 
-#########################################
-#                                       #
-# CARGA DE DATOS                        #
-#                                       #
-#########################################
+def main():
+    print("\nBienvenido al TP del Grupo 5!")
+    time.sleep(0.5)
+    print("\nCargando opciones...")
+    time.sleep(0.5)
+    print("\n[#          ]")
+    print("[##         ]")
+    time.sleep(1.5)
+    print("[####       ]")
+    print("[#######    ]")
+    time.sleep(2)
+    print("[########## ]")
+    time.sleep(1.5)
+    print("[###########]")
+    time.sleep(0.5)
+    print("Opciones cargadas con exito!")
+    time.sleep(0.5)
 
-from Conexion import Conexion
-from Solicitud import Solicitud
-from Nodo import Nodo
-from Ruta import *
-from medios_transporte import *
-from optimizador import *
-from correr_rutas import *
-from graficador_belu import *
-from Graficador import *
+    while True:
+        print("\n~~~ Menú Principal ~~~")
+        print("1. Ejecutar CLI")
+        print("2. Ejecutar código automático")
+        print("3. Salir")
+        opcion = input("[Menu] Ingrese 1, 2 o 3: ").strip()
 
-archivo_solicitud = 'solicitudes.csv'
-archivo_nodos = 'nodos.csv'
-archivo = 'conexiones.csv'
+        if opcion == "1":
+            print("Ejecutando CLI...")
+            time.sleep(0.2)
+            subprocess.run(["python", "CLI.py"])
 
-Nodo.asignar_nodos(archivo_nodos)
-Conexion.asignar_conexion(archivo)
-Solicitud.asignar_solicitudes(archivo_solicitud)          
+        elif opcion == "2":
+            print("Ejecutando código automático...")
+            time.sleep(0.5)
+            subprocess.run(["python", "verificaciones.py"])
 
-transportes = {"ferroviario": ferroviario, "automotor": automotor, "aereo": aereo,"fluvial": fluvial}    
-vehiculos = list(transportes.values())
+        elif opcion == "3":
+            print("Saliendo del programa...")
+            time.sleep(0.5)
+            break
+        else:
+            print("\n[Menu] Opción no válida. Intente nuevamente.")
 
-# print("\n--- SOLICITUDES CARGADAS ---")
-# for s in Solicitud.solicitudes.values():
-#    print(f"ID: {s.id_carga}, Origen: {s.origen}, Destino: {s.destino}, Peso: {s.peso_kg} kg")
-
-# print("\n--- NODOS CARGADOS ---")
-# for nombre, nodo in Nodo.nodos.items():
-#    print(f"Nombre: {nombre}, Objeto: {nodo}")
-
-# print("\n--- CONEXIONES CARGADAS ---")
-# for c in Conexion.conexiones:
-#    print(f"Origen: {c.origen}, Destino: {c.destino}, Modo: {c.modo}")
-
-
-#########################################
-#                                       #
-# EJECUTO SOLICITUD                     #
-#                                       #
-#########################################
-
-for solicitud in Solicitud.solicitudes.values():
-    inicio = Nodo.nodos[solicitud.origen]
-    fin = Nodo.nodos[solicitud.destino]
-
-    print(f"\n=== Solución para solicitud {solicitud.id_carga}: {solicitud.origen} -> {solicitud.destino} ===")
-#    super_optimizador(vehiculos, inicio, fin)
-    tupla_modo_conexiones, tupla_modo_nodos = super_optimizador(vehiculos, inicio, fin)
-
-########## PRUEBA DE RESULTADOS DEL OPTIMIZADOR ##########
-
-    # print("\n-------- Caminos (modo y conexiones) ---")
-    # for modo, conexiones in tupla_modo_conexiones:
-    #     for conexion in conexiones:
-    #         print(f"[INFO]  {conexion.origen.nombre} -> {conexion.destino.nombre} ({conexion.modo.modo})")
-
-    # print("\n--------   Caminos  (modo y nodos)   ---")
-    # for modo, nodos in tupla_modo_nodos:
-    #     nombres = [nodo.nombre for nodo in nodos]
-    #     print(f"[INFO] Modo: {modo} | Nodos: {' -> '.join(nombres)}")
-
-# #    break  # probár con una sola solicitud
-
-#########################################################
-
-    rutas = convertir_a_objetos_ruta(tupla_modo_conexiones, solicitud, tupla_modo_nodos)
-    for ruta in rutas:
-        ruta.calcular_cantidad()
-
-########## MOSTRAR RUTAS ##########
-
-#    for ruta in rutas:
-#        print(ruta)
-
-###################################
-
-    print(F'\n === Rutas encontradas para la solicitud {solicitud.id_carga} ===\n')
-
-    if not rutas:
-        print("No se encontraron rutas para esta solicitud.")
-        continue
-    for ruta in rutas:
-        print(ruta)
-
-###################################
-
-    print(F'\n === Mejores rutas para la solicitud {solicitud.id_carga} ===\n')
-
-    mostrar_ruta_mas_rapida(rutas)
-
-    mostrar_ruta_mas_economica(rutas, solicitud)
-
-#     # Luego de mostrar la ruta mas rapida y la mas economica, es necesario borrar las rutas actuales para iniciar de 0 en la proxima solicitud
-#     rutas.clear()
+main()

@@ -53,6 +53,7 @@ class CLI:
                             raise ValueError("El nombre del archivo de nodos no puede estar vacío.")
                         if nombre_nodoscsv.endswith(".csv"):
                             raise ValueError("El nombre del archivo de nodos no debe contener la extensión '.csv'.")
+                        
                         print(f"\n[Menu] Cargando nodos desde {nombre_nodoscsv}.csv...")
                         time.sleep(0.5)
 
@@ -73,48 +74,70 @@ class CLI:
                 # En cambio, nodos duplicados, solo se arreglan "ignorandolos"
                 except ValueError as e:
                     print(f"[CLI] ValueError: {e}")
-                    time.sleep(0.5)
+                    time.sleep(1)
                 except Exception as e:
                     print(f"[CLI] Error al cargar los nodos: {e}")
                     print("[CLI] Asegúrate de que el archivo CSV esté en el formato correcto.")
-                    time.sleep(0.5)
+                    time.sleep(1)
 
             time.sleep(1)
 
 ###################################################################################
 
             while True:
-                print("\n~~~ CONEXIONES ~~~")
-                print("Como se llama el csv de las conexiones?")
-                print("a. conexiones.csv")
-                print("b. distinto")
-                opcion = input("\n[Menu] Seleccione una opción: ").strip().lower()
+                try:
+                    print("\n~~~ CONEXIONES ~~~")
+                    print("Como se llama el csv de las conexiones?")
+                    print("a. conexiones.csv")
+                    print("b. distinto")
+                    opcion = input("\n[Menu] Seleccione una opción: ").strip().lower()
 
-                if opcion == "a":
-                    print("\n[Menu] Cargando conexiones desde conexiones.csv...")
-                    time.sleep(0.5)
+                    if opcion == "a":
+                        print("\n[Menu] Cargando conexiones desde conexiones.csv...")
+                        time.sleep(0.5)
 
-                    archivo_conexiones = 'conexiones.csv'
-                    Conexion.asignar_conexion(archivo_conexiones)
-                    print("[Menu] Conexiones cargadas correctamente.")
+                        archivo_conexiones = 'conexiones.csv'
+                        Conexion.asignar_conexion(archivo_conexiones)
+                        print("[Menu] Conexiones cargadas correctamente.")
 
-                    break
+                        break
 
-                elif opcion == "b":
-                    print("\n[Menu] Como se llama el csv de las conexiones?")
-                    print("[Menu] No incluir la extension .csv")
-                    nombre_conexionescsv = input("[Menu] Ingrese el nombre del archivo: ").strip()
-                    print(f"\n[Menu] Cargando conexiones desde {nombre_conexionescsv}.csv...")
-                    time.sleep(0.5)
+                    elif opcion == "b":
+                        print("\n[Menu] Como se llama el csv de las conexiones?")
+                        print("[Menu] No incluir la extension .csv")
+                        nombre_conexionescsv = input("[Menu] Ingrese el nombre del archivo: ").strip()
 
-                    archivo_conexiones = f"{nombre_conexionescsv}.csv"
-                    Conexion.asignar_conexion(archivo_conexiones)
-                    print("[Menu] Conexiones cargadas correctamente.")
+                        if nombre_conexionescsv.strip() == "":
+                            raise ValueError("El nombre del archivo de conexiones no puede estar vacío.")
+                        if nombre_conexionescsv.endswith(".csv"):
+                            raise ValueError("El nombre del archivo de conexiones no debe contener la extensión '.csv'.")
+                        
+                        print(f"\n[Menu] Cargando conexiones desde {nombre_conexionescsv}.csv...")
+                        time.sleep(0.5)
 
-                    break
+                        archivo_conexiones = f"{nombre_conexionescsv}.csv"
+                        Conexion.asignar_conexion(archivo_conexiones)
+                        print("[Menu] Conexiones cargadas correctamente.")
+                        break
 
-                else:
-                    print("[Menu] Opción no válida. Intenta nuevamente.")
+                    else:
+                        print("[Menu] Opción no válida. Intenta nuevamente.")
+
+                # Verifico POR:
+                # 1. El nombre del csv no este vacio
+                # 2. No pongan el nombre con .csv
+                # 3. El modo ded transporte sea valido
+                # 4. Los nodos origen y destino entren entre los nodos cargados
+                # 5. Los nodos origen y destino no sean el mismo
+                # 6. Exista el header, no sea nulo, y sea lo que esperamos
+                except ValueError as e:
+                    print(f"[CLI] ValueError: {e}")
+                    time.sleep(1)
+                except Exception as e:
+                    print(f"[CLI] Error al cargar las conexiones: {e}")
+                    print("[CLI] Asegúrate de que el archivo CSV esté en el formato correcto.")
+                    time.sleep(1)
+
             time.sleep(1)
 
 ###################################################################################

@@ -20,7 +20,14 @@ class Conexion():
         # Leer el archivo CSV
         with open(archivo, 'r') as f:
             lector = csv.reader(f)
-            next(lector)
+            header = next(lector, None)
+
+            header_esperado = [ "origen", "destino", "tipo", "distancia_km", "restriccion", "valor_restriccion" ]
+            if header is None:
+                raise ValueError("El archivo esta vachio o no tiene header")
+            header = [h.strip().lower() for h in header]
+            if header != header_esperado:
+                raise ValueError(f"El header tiene que ser exactamente:\n {','.join(header_esperado)}")
 
             for fila in lector:
                 #if fila[0] not in Nodo.nodos.keys() or fila[1] not in Nodo.nodos.keys():
@@ -28,11 +35,11 @@ class Conexion():
                 origen_nombre = fila[0].strip()
                 destino_nombre = fila[1].strip()
                 if origen_nombre not in Nodo.nodos or destino_nombre not in Nodo.nodos:
-                    raise ValueError("El origen o el destino no están entre los nodos")
+                    raise ValueError("El origen o el destino de una de las conexiones no esta entre los nodos")
                 
                 
                 if  fila[2].lower() not in tipo_conexion:
-                    raise ValueError("El modo no esta entre los modos posibles")
+                    raise ValueError("El modo de transporte no esta entre los modos posibles")
                 
                 
                 #if fila[0]==fila[1]:

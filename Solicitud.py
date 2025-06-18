@@ -15,7 +15,15 @@ class Solicitud:
     def asignar_solicitudes(cls, archivo_solicitud):
         with open(archivo_solicitud, 'r', encoding='utf-8') as f:
             lector = csv.reader(f)
-            next(lector)
+            header = next(lector, None)
+
+            header_esperado = [ "id_carga","peso_kg","origen","destino" ]
+            if header is None:
+                raise ValueError("El archivo esta vachio o no tiene header")
+            header = [h.strip().lower() for h in header]
+            if header != header_esperado:
+                raise ValueError(f"El header tiene que ser exactamente:\n {','.join(header_esperado)}")
+
             for fila in lector:
                 if len(fila) < 4:
                     raise ValueError("Falta información en la fila del archivo de pedidos.")

@@ -23,6 +23,8 @@ class CLI:
 ###################################################################################
 
             while True:
+                # Verifico POR
+                # 1. Pongan una opcion valida de los menus, o vuelven a intentar
                 try:
                     print("\n~~~ Carga de datos ~~~")
                     print("Empezamos cargando los datos necesarios")
@@ -71,7 +73,7 @@ class CLI:
                 # 2. No pongan el nombre con .csv
                 # 3. Exista un header no nulo que sea en lower.strip "nombre"
                 # 4. No haya un Nodo nulo o vacio
-                # En cambio, nodos duplicados, solo se arreglan "ignorandolos"
+                # En cambio, nodos duplicados, se arreglan solos "ignorando" el segundo
                 except ValueError as e:
                     print(f"[CLI] ValueError: {e}")
                     time.sleep(1)
@@ -143,37 +145,59 @@ class CLI:
 ###################################################################################
 
             while True:
-                print("\n~~~ SOLICITUD ~~~")
-                print("Como se llama el csv de las solicitudes?")
-                print("a. solicitudes.csv")
-                print("b. distinto")
-                opcion = input("\n[Menu] Seleccione una opción: ").strip().lower()
+                try:
+                    print("\n~~~ SOLICITUD ~~~")
+                    print("Como se llama el csv de las solicitudes?")
+                    print("a. solicitudes.csv")
+                    print("b. distinto")
+                    opcion = input("\n[Menu] Seleccione una opción: ").strip().lower()
 
-                if opcion == "a":
-                    print("\n[Menu] Cargando solicitudes desde solicitudes.csv...")
-                    time.sleep(0.5)
+                    if opcion == "a":
+                        print("\n[Menu] Cargando solicitudes desde solicitudes.csv...")
+                        time.sleep(0.5)
 
-                    archivo_solicitudes = 'solicitudes.csv'
-                    Solicitud.asignar_solicitudes(archivo_solicitudes)
-                    print("[Menu] Solicitudes cargadas correctamente.")
+                        archivo_solicitudes = 'solicitudes.csv'
+                        Solicitud.asignar_solicitudes(archivo_solicitudes)
+                        print("[Menu] Solicitudes cargadas correctamente.")
 
-                    break
+                        break
 
-                elif opcion == "b":
-                    print("\n[Menu] Como se llama el csv de las solicitudes?")
-                    print("[Menu] No incluir la extension .csv")
-                    nombre_solicitudescsv = input("[Menu] Ingrese el nombre del archivo: ").strip()
-                    print(f"\n[Menu] Cargando solicitudes desde {nombre_solicitudescsv}.csv...")
-                    time.sleep(0.5)
+                    elif opcion == "b":
+                        print("\n[Menu] Como se llama el csv de las solicitudes?")
+                        print("[Menu] No incluir la extension .csv")
+                        nombre_solicitudescsv = input("[Menu] Ingrese el nombre del archivo: ").strip()
 
-                    archivo_solicitudes = f"{nombre_solicitudescsv}.csv"
-                    Solicitud.asignar_solicitudes(archivo_solicitudes)
-                    print("[Menu] Solicitudes cargadas correctamente.")
+                        if nombre_solicitudescsv.strip() == "":
+                            raise ValueError("El nombre del archivo de solicitudes no puede estar vacío.")
+                        if nombre_solicitudescsv.endswith(".csv"):
+                            raise ValueError("El nombre del archivo de solicitudes no debe contener la extensión '.csv'.")
+                        
+                        print(f"\n[Menu] Cargando solicitudes desde {nombre_solicitudescsv}.csv...")
+                        time.sleep(0.5)
 
-                    break
+                        archivo_solicitudes = f"{nombre_solicitudescsv}.csv"
+                        Solicitud.asignar_solicitudes(archivo_solicitudes)
+                        print("[Menu] Solicitudes cargadas correctamente.")
+                        break
 
-                else:
-                    print("[Menu] Opción no válida. Intenta nuevamente.")
+                    else:
+                        print("[Menu] Opción no válida. Intenta nuevamente.")
+
+                # Verifico POR:
+                # 1. El nombre del csv no este vacio
+                # 2. No pongan el nombre con .csv
+                # 3. No falte informacion en alguna de las solicitudes
+                # 4. No esten duplicados los ID de solicitud
+                # 5. Origen y Destino existan como nodo
+                # 6. Exista el header, no sea nulo, y sea lo que esperamos
+                except ValueError as e:
+                    print(f"[CLI] ValueError: {e}")
+                    time.sleep(1)
+                except Exception as e:
+                    print(f"[CLI] Error al cargar las solicitudes: {e}")
+                    print("[CLI] Asegúrate de que el archivo CSV esté en el formato correcto.")
+                    time.sleep(1)
+
             time.sleep(1)
 
 ###################################################################################

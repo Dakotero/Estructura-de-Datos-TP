@@ -1,4 +1,4 @@
-from graficador_belu import *
+from Graficador import *
 
 def mostrar_ruta_mas_rapida(rutas):
     if not rutas:

@@ -1,7 +1,7 @@
 import csv
 import math
 from Nodo import Nodo 
-from medios_transporte import transportes, MedioTransporte, tipo_conexion
+from medios_transporte import transportes, tipo_conexion
 
 class Conexion():
     conexiones = []

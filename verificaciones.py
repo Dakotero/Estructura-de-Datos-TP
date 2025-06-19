@@ -13,7 +13,6 @@ from Ruta import *
 from medios_transporte import *
 from optimizador import *
 from correr_rutas import *
-from graficador_belu import *
 from Graficador import *
 
 archivo_solicitud = 'solicitudes.csv'

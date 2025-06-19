@@ -235,13 +235,13 @@ class CLI:
                 if opcion == "a":
                     print(f"\n[Resultado] Total de Nodos: {len(Nodo.nodos)}")
                     for nombre, nodo in Nodo.nodos.items():
-                        print(f"Nombre: {nombre}, Objeto: {nodo}")
+                        print(f"Nombre: {nombre},\t\t\tObjeto: {nodo}")
                     time.sleep(1)
 
                 elif opcion == "b":
                     print(f"\n[Resultado] Total de Conexiones: {len(Conexion.conexiones)}")
                     for c in Conexion.conexiones:
-                        print(f"Origen: {c.origen}, Destino: {c.destino}, Modo: {c.modo}")
+                        print(f"Origen: {c.origen.nombre},\t\t\tDestino: {c.destino.nombre},\t\t\tModo: {c.modo.modo}")
                     time.sleep(1)
 
                 elif opcion == "c":

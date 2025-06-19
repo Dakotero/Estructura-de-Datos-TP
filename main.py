@@ -22,8 +22,8 @@ def main():
 
     while True:
         print("\n~~~ Menú Principal ~~~")
-        print("1. Ejecutar CLI")
-        print("2. Ejecutar código automático")
+        print("1. Ejecutar CLI                    (verificaciones especificas)")
+        print("2. Ejecutar código automático      (verificaciones genericas)")
         print("3. Salir")
         opcion = input("[Menu] Ingrese 1, 2 o 3: ").strip()
 

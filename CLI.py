@@ -6,7 +6,6 @@ from medios_transporte import *
 from optimizador import *
 from correr_rutas import *
 from graficador_belu import *
-from Graficador import *
 import time
 
 class CLI:
@@ -18,7 +17,6 @@ class CLI:
 ###################################################################################
 
             print("\n~~~ Bienvenido al CLI del Grupo 5 ~~~")
-            time.sleep(0.2)
 
 ###################################################################################
 
@@ -258,7 +256,7 @@ class CLI:
                             print(f"{solicitud.id_carga}: {solicitud.origen} -> {solicitud.destino}")
                         print(f"\n[Menu] Si desea volver al menu, ingresar 'MENU'\n")
                         
-                        id_solicitud = input("[Menu] Ingrese el ID de la solicitud (ex. CARGA_011): ").strip()
+                        id_solicitud = input("[Menu] Ingrese el ID de la solicitud (ex. CARGA_0011): ").strip()
 
                         if id_solicitud.lower() == "menu":
                             print("[CLI] Volviendo al menú de opciones...")

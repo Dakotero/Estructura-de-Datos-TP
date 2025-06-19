@@ -1,5 +1,4 @@
 from graficador_belu import *
-from Graficador import *
 
 def mostrar_ruta_mas_rapida(rutas):
     if not rutas:
@@ -20,8 +19,9 @@ def mostrar_ruta_mas_rapida(rutas):
     print("\n[RESULTADO] Ruta más rápida")
     print(f"{ruta_mas_rapida}")  
     
-    graficar_itinerario(ruta_mas_rapida)
+    graficar_tiempo_vs_distancia(ruta_mas_rapida)
     graficador_conexion_vs_tiempo(ruta_mas_rapida)
+    graficar_distancia_vs_costo(ruta_mas_rapida)
 
 
 def mostrar_ruta_mas_economica(rutas, solicitud):
@@ -40,3 +40,7 @@ def mostrar_ruta_mas_economica(rutas, solicitud):
 
     print("\n[RESULTADO] Ruta más económica")
     print(f"{ruta_mas_economica}")
+    
+    graficar_tiempo_vs_distancia(ruta_mas_economica)
+    graficador_conexion_vs_tiempo(ruta_mas_economica)
+    graficar_distancia_vs_costo(ruta_mas_economica)

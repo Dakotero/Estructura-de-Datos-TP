@@ -4,11 +4,27 @@ Para la velocidad nominal del aereo hicimos la esperanza.
 Velocidad_nominal = (probabilidad de mal clima) x (velocidad si hay mal clima) + (1 - probabilidad de mal clima) x (velocidad si hay buen clima)
 por ejemplo, si la probabilidad de mal clima es 0,2, se calcula:   vel_nom = 0,2 x 400 + 0,8 x 600
 
-2) Clases
+2) Clases creadas
+Conexion
+Medios de transporte
+Cada medio de transporte (clases hijas de medio de transporte) que hereda sus caracteristicas principales de medio de transporte 
+Nodo
+Ruta
+Solicitud 
+Red de conexiones
+Verificacion 
+CLI
 
 3) Principales desafios
+Se tomo como una base clave del trabajo la generacion de rutas. Que son creadas en el archivo optimizador.
+A partir de ese punto se fueron creando las diferentes clases y adaptando el optimizador segun lo necesario de la caracteristicas de las clases.
+Luego se crearon las funciones de la busqueda de rutas mas econimica y de menor tiempo. Al igual que la creacion de graficos.
+Finalmente se crearon las debidas restricciones de cada clase, para que el codigo responda a un posibles errores.
 
 4) Decisiones de diseño
+Creamos un archivo por cada clase, tambien existe el archivo correr_rutas que esta formado con diferentes funciones.
+Creamos un main que ejecuta todo de forma automatica
+Tambien un CLI que ejecuta el codigo de forma interactiva con el usuario
 
 5) Optimizador
 El optimizador crea una clase (Red de Conexiones) por cada modo de vehiculo, y arma la red para cada uno

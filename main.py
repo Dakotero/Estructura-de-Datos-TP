@@ -1,5 +1,6 @@
 import time
-import subprocess
+from CLI import CLI
+from verificaciones import Verificacion
 
 def main():
     print("\nBienvenido al TP del Grupo 5!")
@@ -30,12 +31,14 @@ def main():
         if opcion == "1":
             print("Ejecutando CLI...")
             time.sleep(0.2)
-            subprocess.run(["python", "CLI.py"])
+            cli = CLI()
+            cli.runCLI()
 
         elif opcion == "2":
             print("Ejecutando código automático...")
             time.sleep(0.5)
-            subprocess.run(["python", "verificaciones.py"])
+            verificacion = Verificacion()
+            verificacion.runVerificacion()
 
         elif opcion == "3":
             print("Saliendo del programa...")

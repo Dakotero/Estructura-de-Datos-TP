@@ -1,20 +1,39 @@
-
-
-ACLARACIONES / SUPOSICIONES
-
-1) En el cálculo del tiempo para cada ruta, en el caso de aéreo, la velocidad se ve afectada por el clima.
+1) Calculo de tiempo
+En el cálculo del tiempo para cada ruta, en el caso de aéreo, la velocidad se ve afectada por el clima.
 Para la velocidad nominal del aereo hicimos la esperanza.
 Velocidad_nominal = (probabilidad de mal clima) x (velocidad si hay mal clima) + (1 - probabilidad de mal clima) x (velocidad si hay buen clima)
 por ejemplo, si la probabilidad de mal clima es 0,2, se calcula:   vel_nom = 0,2 x 400 + 0,8 x 600
 
-2) 
+2) Clases
 
+3) Principales desafios
 
+4) Decisiones de diseño
 
+5) Optimizador
+El optimizador crea una clase (Red de Conexiones) por cada modo de vehiculo, y arma la red para cada uno
+La red, es basicamente un diccionario que tiene de clave CADA nodo que exista (accesible por una conexion del vehiculo de la red)
+Y una lista de todos sus vecinos.
+Entonces termino con la informacion de todos los nodos de la red y sus vecinos.
+La busqueda entonces es por sistema de pila de tuplas:
+Empezando por el origen, la lista empieza como: [(inicio, [inicio])], siendo (nodo_actual, camino_actual)
+Entonces, por sistema LIFO, 
+1. agarra el siguiente valor (en este caso hay solo uno)
+2. verifica no se haya ya llegado a destino (en caso de que si, lo guarda en caminos posibles)
+3. lo elimina
+4. suma a la pila TODOS sus vecinos posibles desde el nodo_actual, POR LOS QUE NO PASE YA (no esten en camino_actual) [(vecino, camino + [vecino])]
+5. Repito
+De esta forma, reviso todos los posibles caminos uno a uno, guardando todos los posibles caminos que partiendo de origen, terminan en destino.
+Posteriormente, se aplican restricciones por peso u otras razones
 
+6) CLI
+En el uso del CLI, UNA VEZ EMPEZADO, no hay una forma comoda de resetear su memoria.
+En caso de por alguna razon (querer cambiar archivos cargados, cambio codigo),
+Recomendamos o salir del CLI al menu principial, y volver a correr el CLI, o eliminar la terminal
+y volver a correr el codigo
 
+7) CHECKS: (cuando se usa el CLI)
 
-z) CHECKS:
 [GENERALES]
 # 1. Pongan una opcion valida de los menus del CLI, o vuelven a intentar
 # 2. Problemas con el optimizador, creando las tuplas
@@ -30,6 +49,7 @@ z) CHECKS:
 # 4. No haya un Nodo nulo o vacio
 # En cambio, nodos duplicados, se arreglan solos "ignorando" el segundo
 # 5. Que no hayan 0 nodos
+
 [CONEXIONES]
 # 1. El nombre del csv no este vacio
 # 2. No pongan el nombre con .csv
@@ -38,6 +58,7 @@ z) CHECKS:
 # 5. Los nodos origen y destino no sean el mismo
 # 6. Exista el header, no sea nulo, y sea lo que esperamos
 # 7. Que no hayan 0 conexiones
+
 [SOLICITUDES]
 # 1. El nombre del csv no este vacio
 # 2. No pongan el nombre con .csv

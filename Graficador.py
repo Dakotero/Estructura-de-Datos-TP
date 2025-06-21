@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from medios_transporte import transportes
 
 
-def graficar_tiempo_vs_distancia(ruta):
+def graficar_tiempo_vs_distancia(ruta, tipo_ruta="Ruta"):
     tiempo_acumulado = 0
     distancia_acumulada = 0
 
@@ -29,7 +29,7 @@ def graficar_tiempo_vs_distancia(ruta):
 
     ax.set_xlabel("Tiempo acumulado (horas)")
     ax.set_ylabel("Distancia acumulada (km)")
-    ax.set_title(f"Distancia vs Tiempo - Transporte: {ruta.transporte}")
+    ax.set_title(f"{tipo_ruta} - {ruta.transporte.upper()}: Tiempo vs Distancia")
     ax.grid(True)
     ax.legend()
     plt.tight_layout()
@@ -37,7 +37,7 @@ def graficar_tiempo_vs_distancia(ruta):
 
 
 
-def graficador_conexion_vs_tiempo(ruta):
+def graficador_conexion_vs_tiempo(ruta, tipo_ruta):
 
     
     nombres_conexiones = []
@@ -53,14 +53,14 @@ def graficador_conexion_vs_tiempo(ruta):
     plt.step(["Inicio"] + nombres_conexiones, tiempos_acumulados, where='post', marker='o')
     plt.ylabel("Tiempo acumulado (h)")
     plt.xlabel("Conexión")
-    plt.title(f"Tiempo acumulado por conexión - Ruta #{ruta.id}")
+    plt.title(f"{tipo_ruta} - {ruta.transporte.upper()}: Tiempo por conexión")
     plt.grid(True)
     plt.tight_layout()
     plt.show()
 
 
 
-def graficar_distancia_vs_costo(ruta):
+def graficar_distancia_vs_costo(ruta, tipo_ruta="Ruta"):
     ruta.calcular_cantidad()
     cantidad = ruta.cantidad_a_utilizar
     solicitud = ruta.solicitud
@@ -118,7 +118,7 @@ def graficar_distancia_vs_costo(ruta):
 
     ax.set_xlabel("Distancia acumulada (km)")
     ax.set_ylabel("Costo acumulado ($)")
-    ax.set_title(f"Costo Total vs Distancia - Transporte: {transporte}")
+    ax.set_title(f"{tipo_ruta} - {ruta.transporte.upper()}: Costo vs Distancia")
     ax.grid(True)
     ax.legend()
     plt.tight_layout()

@@ -13,6 +13,9 @@ class CLI:
     def runCLI(self):
 
         try:
+            Nodo.nodos = {}
+            Conexion.conexiones = []
+            Solicitud.solicitudes = {}
 
 ###################################################################################
 

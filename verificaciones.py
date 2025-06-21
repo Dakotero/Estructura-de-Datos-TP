@@ -24,6 +24,10 @@ class Verificacion:
     def runVerificacion(self):
 
         try:
+            Nodo.nodos = {}
+            Conexion.conexiones = []
+            Solicitud.solicitudes = {}
+            
             Nodo.asignar_nodos(archivo_nodos)
             Conexion.asignar_conexion(archivo)
             Solicitud.asignar_solicitudes(archivo_solicitud)     

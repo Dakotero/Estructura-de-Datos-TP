@@ -4,21 +4,21 @@ from verificaciones import Verificacion
 
 def main():
     print("\nBienvenido al TP del Grupo 5!")
-    time.sleep(0.5)
+    time.sleep(0.3)
     print("\nCargando opciones...")
-    time.sleep(0.5)
+    time.sleep(0.3)
     print("\n[#          ]   10%")
     print("[##         ]   20%")
-    time.sleep(1.5)
+    time.sleep(0.3)
     print("[####       ]   40%")
-    time.sleep(0.5)
+    time.sleep(0.3)
     print("[#######    ]   70%")
-    time.sleep(2)
-    print("[########## ]   90%")
-    time.sleep(1.5)
+    time.sleep(0.3)
+    print("[#########  ]   90%")
+    time.sleep(0.3)
     print("[###########]   100%")
     time.sleep(0.5)
-    print("Opciones cargadas con exito!")
+    print("\nOpciones cargadas con exito!")
     time.sleep(0.5)
 
     while True:
@@ -30,19 +30,16 @@ def main():
 
         if opcion == "1":
             print("Ejecutando CLI...")
-            time.sleep(0.2)
             cli = CLI()
             cli.runCLI()
 
         elif opcion == "2":
             print("Ejecutando código automático...")
-            time.sleep(0.5)
             verificacion = Verificacion()
             verificacion.runVerificacion()
 
         elif opcion == "3":
             print("Saliendo del programa...")
-            time.sleep(0.5)
             break
         else:
             print("\n[Menu] Opción no válida. Intente nuevamente.")

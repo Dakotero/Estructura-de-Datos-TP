@@ -43,3 +43,21 @@ def mostrar_ruta_mas_economica(rutas, solicitud):
     graficar_tiempo_vs_distancia(ruta_mas_economica, tipo_ruta="Ruta más económica")
     graficador_conexion_vs_tiempo(ruta_mas_economica, tipo_ruta="Ruta más económica")
     graficar_distancia_vs_costo(ruta_mas_economica, tipo_ruta="Ruta más económica")
+
+def mostrar_ruta_mas_ciudades(rutas):
+    if not rutas:
+        print("No hay rutas disponibles.")
+        return
+
+    # Buscar la ruta de menor tiempo
+    ruta_mas_ciuadades = rutas[0]
+    mas_ciudades = ruta_mas_ciuadades.cantidad_conexiones
+
+    for ruta in rutas[1:]:
+        cantidad = ruta.cantidad_conexiones
+        if cantidad > mas_ciudades:
+            mas_ciudades = cantidad
+            ruta_mas_ciuadades = ruta
+
+    print("\n[RESULTADO] Ruta con mas ciudades")
+    print(f"{ruta_mas_ciuadades}")  

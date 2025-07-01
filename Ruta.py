@@ -18,6 +18,7 @@ class Ruta():
         self.tiempo_total = 0
         self.nodos = nodos
         self.cantidad_a_utilizar = 0
+        self.cantidad_conexiones = len(conexiones)
 
     def __str__(self):
 
@@ -38,6 +39,7 @@ class Ruta():
         #texto += f"\nDuración: {tiempo_total:.2f} horas" 
         texto += f"\nCosto total: ${costo_total:,.2f}"
         texto += f"\nCantidad de transportes: {self.cantidad_a_utilizar}"
+        texto +=f"\nCantidad de ciudades: {self.cantidad_conexiones}"
 
 
         return texto

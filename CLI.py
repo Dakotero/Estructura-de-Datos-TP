@@ -185,8 +185,7 @@ class CLI:
                                 print("a. Ver Rutas")
                                 print("b. Ver Ruta mas Rapida y sus Graficos")
                                 print("c. Ver Ruta mas Economica y sus Graficos")
-                                print("d. Ver la Ruta mas Economica y la mas Rapida, con sus Graficos")
-                                print("e. Ver la ruta con mayor cantidad de ciudades intermedias")
+                                print("d. Ver la ruta con mayor cantidad de ciudades intermedias")
                                 print("~")
                                 print("z. Ver otra solicitud o opciones del menu")
 
@@ -213,12 +212,6 @@ class CLI:
                                     time.sleep(1)
 
                                 elif opcion == "d":
-                                    print(f"\n[Resultado] Ver la Ruta mas Economica y la mas Rapida, con sus Graficos para la solicitud {id_solicitud}:")
-                                    mostrar_ruta_mas_economica(rutas, solicitud)
-                                    print(f"\n[IMPORTANTE] Si no podes continuar, es porque hay todavia graficos abiertos!")
-                                    time.sleep(1)
-
-                                elif opcion == "e":
                                     print(f"\n[Resultado] Ver la Ruta con mayor cantidad de ciudades intermedias {id_solicitud}:")
                                     mostrar_ruta_mas_ciudades(rutas)
                                     time.sleep(1)

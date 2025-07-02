@@ -5,7 +5,6 @@ from Nodo import Nodo
 from Ruta import *
 from medios_transporte import *
 from optimizador import *
-from correr_rutas import *
 from Graficador import *
 
 archivo_solicitud = 'solicitudes.csv'
@@ -42,7 +41,7 @@ class Verificacion:
 
             #########################################################
 
-                rutas = convertir_a_objetos_ruta(tupla_modo_conexiones, solicitud, tupla_modo_nodos)
+                rutas = Ruta.convertir_a_objetos_ruta(tupla_modo_conexiones, solicitud, tupla_modo_nodos)
                 for ruta in rutas:
                     ruta.calcular_cantidad()
 
@@ -58,9 +57,9 @@ class Verificacion:
 
                 print(F'\n === Mejores rutas para la solicitud {solicitud.id_carga} ===\n')
 
-                mostrar_ruta_mas_rapida(rutas)
+                Ruta.mostrar_ruta_mas_rapida(rutas)
 
-                mostrar_ruta_mas_economica(rutas, solicitud)
+                Ruta.mostrar_ruta_mas_economica(rutas, solicitud)
 
         except ValueError as e:
             print(f"[Cd Automatico] ValueError: {e}.")

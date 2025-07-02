@@ -3,6 +3,7 @@ import math
 from Conexion import Conexion
 from Solicitud import Solicitud
 from medios_transporte import transportes
+from Graficador import *
 
 class Ruta():
     contadorID = 1
@@ -82,18 +83,80 @@ class Ruta():
 
         return costo_total
 
+    @staticmethod
+    def convertir_a_objetos_ruta(tupla_modo_conexiones, solicitud, tupla_modo_nodos):
+        rutas = []
+        try:
+            for i in range(len(tupla_modo_conexiones)):
+                transporte = tupla_modo_conexiones[i][0]
+                lista_conexiones = tupla_modo_conexiones[i][1]
+                lista_nodos = tupla_modo_nodos[i][1]
 
-def convertir_a_objetos_ruta(tupla_modo_conexiones, solicitud, tupla_modo_nodos):
-    rutas = []
-    try:
-        for i in range(len(tupla_modo_conexiones)):
-            transporte = tupla_modo_conexiones[i][0]
-            lista_conexiones = tupla_modo_conexiones[i][1]
-            lista_nodos = tupla_modo_nodos[i][1]
+                nueva_ruta = Ruta(transporte, solicitud, lista_conexiones, lista_nodos)
+                rutas.append(nueva_ruta)
+        except (ValueError, TypeError) as e:
+            raise ValueError(f"Hubo un problema transformando los resultados del optimizador en Rutas. \nMas detalles: {e}")
 
-            nueva_ruta = Ruta(transporte, solicitud, lista_conexiones, lista_nodos)
-            rutas.append(nueva_ruta)
-    except (ValueError, TypeError) as e:
-        raise ValueError(f"Hubo un problema transformando los resultados del optimizador en Rutas. \nMas detalles: {e}")
+        return rutas
 
-    return rutas
+    @staticmethod
+    def mostrar_ruta_mas_rapida(rutas):
+        if not rutas:
+            print("No hay rutas disponibles.")
+            return
+
+        ruta_mas_rapida = rutas[0]
+        tiempo_minimo = ruta_mas_rapida.calcular_tiempo_ruta()
+
+        for ruta in rutas[1:]:
+            tiempo = ruta.calcular_tiempo_ruta()
+            if tiempo < tiempo_minimo:
+                tiempo_minimo = tiempo
+                ruta_mas_rapida = ruta
+
+        print("\n[RESULTADO] Ruta más rápida")
+        print(f"{ruta_mas_rapida}")  
+        
+        graficar_tiempo_vs_distancia(ruta_mas_rapida, tipo_ruta="Ruta más rápida")
+        graficador_conexion_vs_tiempo(ruta_mas_rapida, tipo_ruta="Ruta más rápida")
+        graficar_distancia_vs_costo(ruta_mas_rapida, tipo_ruta="Ruta más rápida")
+
+    @staticmethod
+    def mostrar_ruta_mas_economica(rutas, solicitud):
+        if not rutas:
+            print("No hay rutas disponibles.")
+            return
+
+        ruta_mas_economica = rutas[0]
+        costo_minimo = ruta_mas_economica.calcular_costo_ruta(solicitud)
+
+        for ruta in rutas[1:]:
+            costo = ruta.calcular_costo_ruta(solicitud)
+            if costo < costo_minimo:
+                costo_minimo = costo
+                ruta_mas_economica = ruta
+
+        print("\n[RESULTADO] Ruta más económica")
+        print(f"{ruta_mas_economica}")
+        
+        graficar_tiempo_vs_distancia(ruta_mas_economica, tipo_ruta="Ruta más económica")
+        graficador_conexion_vs_tiempo(ruta_mas_economica, tipo_ruta="Ruta más económica")
+        graficar_distancia_vs_costo(ruta_mas_economica, tipo_ruta="Ruta más económica")
+
+    @staticmethod
+    def mostrar_ruta_mas_ciudades(rutas):
+        if not rutas:
+            print("No hay rutas disponibles.")
+            return
+
+        ruta_mas_ciuadades = rutas[0]
+        mas_ciudades = ruta_mas_ciuadades.cantidad_conexiones
+
+        for ruta in rutas[1:]:
+            cantidad = ruta.cantidad_conexiones
+            if cantidad > mas_ciudades:
+                mas_ciudades = cantidad
+                ruta_mas_ciuadades = ruta
+
+        print("\n[RESULTADO] Ruta con mas ciudades")
+        print(f"{ruta_mas_ciuadades}")  

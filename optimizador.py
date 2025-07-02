@@ -13,6 +13,10 @@ class Red_de_Conexiones:
             if conexion.modo.modo == self.vehiculo.modo:
                 self.agregar_conexion(conexion.origen, conexion.destino)
 
+    @staticmethod
+    def modo_str(modo): 
+        return modo.modo if hasattr(modo, "modo") else str(modo).lower().strip()
+
     def agregar_conexion(self, nodo1, nodo2):
         try:
             if nodo1 not in self.caminos:
@@ -87,7 +91,7 @@ def super_optimizador(vehiculos, inicio, fin):
                             (con for con in Conexion.conexiones if
                             ((con.origen == origen and con.destino == destino) or
                             (con.origen == destino and con.destino == origen)) and
-                            modo_str(con.modo) == modo_str(v.modo)),
+                            Red_de_Conexiones.modo_str(con.modo) == Red_de_Conexiones.modo_str(v.modo)),
                             None
                         )
 
@@ -102,6 +106,3 @@ def super_optimizador(vehiculos, inicio, fin):
         raise ValueError(f"Hubo un problema corriendo el super_optimizador. Revisar datos \nMas detalles: {e}")
 
     return tupla_modo_conexiones, tupla_modo_nodos
-
-def modo_str(modo): 
-    return modo.modo if hasattr(modo, "modo") else str(modo).lower().strip()

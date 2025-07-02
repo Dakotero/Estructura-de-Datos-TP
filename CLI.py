@@ -4,7 +4,6 @@ from Nodo import Nodo
 from Ruta import *
 from medios_transporte import *
 from optimizador import *
-from correr_rutas import *
 from Graficador import *
 import time
 
@@ -172,7 +171,7 @@ class CLI:
                             inicio = Nodo.nodos[solicitud.origen]
                             fin = Nodo.nodos[solicitud.destino]
                             tupla_modo_conexiones, tupla_modo_nodos = super_optimizador(vehiculos, inicio, fin)
-                            rutas = convertir_a_objetos_ruta(tupla_modo_conexiones, solicitud, tupla_modo_nodos)
+                            rutas = Ruta.convertir_a_objetos_ruta(tupla_modo_conexiones, solicitud, tupla_modo_nodos)
                             for ruta in rutas:
                                 ruta.calcular_cantidad()
 
@@ -198,19 +197,19 @@ class CLI:
 
                                 elif opcion == "b":
                                     print(f"\n[Resultado] Ruta más rápida y sus Gráficos para la solicitud {id_solicitud}:")
-                                    mostrar_ruta_mas_rapida(rutas)
+                                    Ruta.mostrar_ruta_mas_rapida(rutas)
                                     print(f"\n[IMPORTANTE] Si no podes continuar, es porque hay todavia graficos abiertos!")
                                     time.sleep(1)
 
                                 elif opcion == "c":
                                     print(f"\n[Resultado] Ruta más económica y sus Gráficos para la solicitud {id_solicitud}:")
-                                    mostrar_ruta_mas_economica(rutas, solicitud)
+                                    Ruta.mostrar_ruta_mas_economica(rutas, solicitud)
                                     print(f"\n[IMPORTANTE] Si no podes continuar, es porque hay todavia graficos abiertos!")
                                     time.sleep(1)
 
                                 elif opcion == "d":
                                     print(f"\n[Resultado] Ver la Ruta con mayor cantidad de ciudades intermedias {id_solicitud}:")
-                                    mostrar_ruta_mas_ciudades(rutas)
+                                    Ruta.mostrar_ruta_mas_ciudades(rutas)
                                     time.sleep(1)
 
                                 elif opcion == "z":

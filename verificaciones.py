@@ -1,10 +1,3 @@
-#aca lo q agregue yo (belu) esta en proceso: 
-
-#########################################
-#                                       #
-# CARGA DE DATOS                        #
-#                                       #
-#########################################
 
 from Conexion import Conexion
 from Solicitud import Solicitud
@@ -33,18 +26,6 @@ class Verificacion:
             Solicitud.asignar_solicitudes(archivo_solicitud)     
                 
             vehiculos = list(transportes.values())
-            # print("\n--- SOLICITUDES CARGADAS ---")
-            # for s in Solicitud.solicitudes.values():
-            #    print(f"ID: {s.id_carga}, Origen: {s.origen}, Destino: {s.destino}, Peso: {s.peso_kg} kg")
-
-            # print("\n--- NODOS CARGADOS ---")
-            # for nombre, nodo in Nodo.nodos.items():
-            #    print(f"Nombre: {nombre}, Objeto: {nodo}")
-
-            # print("\n--- CONEXIONES CARGADAS ---")
-            # for c in Conexion.conexiones:
-            #    print(f"Origen: {c.origen}, Destino: {c.destino}, Modo: {c.modo}")
-
 
             #########################################
             #                                       #
@@ -57,35 +38,13 @@ class Verificacion:
                 fin = Nodo.nodos[solicitud.destino]
 
                 print(f"\n=== Solución para solicitud {solicitud.id_carga}: {solicitud.origen} -> {solicitud.destino} ===")
-            #    super_optimizador(vehiculos, inicio, fin)
                 tupla_modo_conexiones, tupla_modo_nodos = super_optimizador(vehiculos, inicio, fin)
-
-            ########## PRUEBA DE RESULTADOS DEL OPTIMIZADOR ##########
-
-                # print("\n-------- Caminos (modo y conexiones) ---")
-                # for modo, conexiones in tupla_modo_conexiones:
-                #     for conexion in conexiones:
-                #         print(f"[INFO]  {conexion.origen.nombre} -> {conexion.destino.nombre} ({conexion.modo.modo})")
-
-                # print("\n--------   Caminos  (modo y nodos)   ---")
-                # for modo, nodos in tupla_modo_nodos:
-                #     nombres = [nodo.nombre for nodo in nodos]
-                #     print(f"[INFO] Modo: {modo} | Nodos: {' -> '.join(nombres)}")
-
-            # #    break  # probár con una sola solicitud
 
             #########################################################
 
                 rutas = convertir_a_objetos_ruta(tupla_modo_conexiones, solicitud, tupla_modo_nodos)
                 for ruta in rutas:
                     ruta.calcular_cantidad()
-
-            ########## MOSTRAR RUTAS ##########
-
-            #    for ruta in rutas:
-            #        print(ruta)
-
-            ###################################
 
                 print(F'\n === Rutas encontradas para la solicitud {solicitud.id_carga} ===\n')
 
@@ -102,9 +61,6 @@ class Verificacion:
                 mostrar_ruta_mas_rapida(rutas)
 
                 mostrar_ruta_mas_economica(rutas, solicitud)
-
-        #     # Luego de mostrar la ruta mas rapida y la mas economica, es necesario borrar las rutas actuales para iniciar de 0 en la proxima solicitud
-        #     rutas.clear()
 
         except ValueError as e:
             print(f"[Cd Automatico] ValueError: {e}.")

@@ -6,8 +6,7 @@ from medios_transporte import transportes
 
 class Ruta():
     contadorID = 1
-    def __init__(self, transporte, solicitud, conexiones, nodos): #solicitud tiene que ser el objeto (instancia) de solicitud, conexiones es una lista de objetos conexion
-
+    def __init__(self, transporte, solicitud, conexiones, nodos):
         self.id = Ruta.contadorID
         Ruta.contadorID += 1
 
@@ -33,10 +32,7 @@ class Ruta():
 
         texto = f"\nTransporte: {self.transporte}"
         texto += f"\nRecorrido: {' → '.join(nombres_nodos)}"
-        #si queremos el tiempo en horas, minutos y segundos:
         texto += f"\nDuración: {int(tiempo_total)}h {int((tiempo_total % 1) * 60)}m {int((((tiempo_total % 1) * 60) % 1) * 60)}s"
-        #si queremos el tiempo en horas decimales:
-        #texto += f"\nDuración: {tiempo_total:.2f} horas" 
         texto += f"\nCosto total: ${costo_total:,.2f}"
         texto += f"\nCantidad de transportes: {self.cantidad_a_utilizar}"
         texto +=f"\nCantidad de ciudades: {self.cantidad_conexiones}"

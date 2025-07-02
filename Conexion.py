@@ -17,7 +17,6 @@ class Conexion():
 
     @classmethod
     def asignar_conexion(cls,archivo):
-        # Leer el archivo CSV
         with open(archivo, 'r') as f:
             lector = csv.reader(f)
             header = next(lector, None)
@@ -30,8 +29,7 @@ class Conexion():
                 raise ValueError(f"El header tiene que ser exactamente:\n {','.join(header_esperado)}")
 
             for fila in lector:
-                #if fila[0] not in Nodo.nodos.keys() or fila[1] not in Nodo.nodos.keys():
-                #    raise ValueError("El origen o el destino no estan entre los nodos")
+
                 origen_nombre = fila[0].strip()
                 destino_nombre = fila[1].strip()
                 if origen_nombre not in Nodo.nodos or destino_nombre not in Nodo.nodos:
@@ -41,27 +39,24 @@ class Conexion():
                 if  fila[2].lower() not in tipo_conexion:
                     raise ValueError("El modo de transporte no esta entre los modos posibles")
                 
-                
-                #if fila[0]==fila[1]:
-                #    raise ValueError("El origen y el destino no pueden ser el mismo")
+
                 if origen_nombre == destino_nombre:
                     raise ValueError("El origen y el destino no pueden ser el mismo")
                 
                 
-                #validar que no exista ya ese camino
                 origen = Nodo.nodos[origen_nombre]
                 destino = Nodo.nodos[destino_nombre]
-                assert isinstance(origen, Nodo) #tratando de encontrar el error. 
+                assert isinstance(origen, Nodo) 
                 assert isinstance(destino, Nodo)
 
                 
                 modo= fila[2].strip().lower()
                 
-                if modo == "ferroviaria": #dejar ferroviariA xq en el archivo de conexiones es femenino
+                if modo == "ferroviaria": 
                     modo = transportes['ferroviario']
                 elif modo == "automotor":
                     modo = transportes['automotor']
-                elif modo == "aerea": #dejar aereA xq en el csv de conexiones es femenino
+                elif modo == "aerea": 
                     modo = transportes['aereo'] 
                 elif modo == "fluvial":
                     modo = transportes['fluvial']
@@ -114,12 +109,10 @@ class Conexion():
             cantidad_completa = carga_total // capacidad
             carga_restante = carga_total % capacidad
 
-            # Cargas completas
             for _ in range(cantidad_completa):
                 costo_conexion += transporte.costo_fijo
                 costo_conexion += transporte.costo_km * distancia
 
-            # Carga parcial
             if carga_restante > 0:
                 costo_conexion += transporte.costo_fijo
                 costo_conexion += transporte.costo_km * distancia
@@ -144,12 +137,3 @@ class Conexion():
 
         return costo_conexion
 
-'''                
-archivo = 'conexiones.csv'
-Conexion.asignar_conexion(archivo)
-
-for c in Conexion.conexiones:
-lista_
-    print(f"{c.origen} -> {c.destino} ({c.modo}), distancia: {c.distancia}, restricción: {c.restriccion}, valor: {c.valor_restriccion}")
-
-'''

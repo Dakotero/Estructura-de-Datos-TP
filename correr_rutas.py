@@ -5,7 +5,6 @@ def mostrar_ruta_mas_rapida(rutas):
         print("No hay rutas disponibles.")
         return
 
-    # Buscar la ruta de menor tiempo
     ruta_mas_rapida = rutas[0]
     tiempo_minimo = ruta_mas_rapida.calcular_tiempo_ruta()
 
@@ -15,7 +14,6 @@ def mostrar_ruta_mas_rapida(rutas):
             tiempo_minimo = tiempo
             ruta_mas_rapida = ruta
 
-    # Mostrar detalles
     print("\n[RESULTADO] Ruta más rápida")
     print(f"{ruta_mas_rapida}")  
     
@@ -49,7 +47,6 @@ def mostrar_ruta_mas_ciudades(rutas):
         print("No hay rutas disponibles.")
         return
 
-    # Buscar la ruta de menor tiempo
     ruta_mas_ciuadades = rutas[0]
     mas_ciudades = ruta_mas_ciuadades.cantidad_conexiones
 

@@ -64,7 +64,6 @@ class CLI:
 
                     elif opcion == "no" or opcion == "continuar":
 
-                        # NODOS
                         if nombre_nodoscsv.strip() == "":
                             raise ValueError("[NODOS] El nombre del archivo de nodos no puede estar vacío.")
                         if nombre_nodoscsv.endswith(".csv"):
@@ -73,7 +72,6 @@ class CLI:
                         if not Nodo.nodos:
                             raise ValueError("[NODOS] No se encontraron nodos en el archivo")
 
-                        # CONEXIONES
                         if nombre_conexionescsv.strip() == "":
                             raise ValueError("[CONEXIONES] El nombre del archivo de conexiones no puede estar vacío.")
                         if nombre_conexionescsv.endswith(".csv"):
@@ -82,7 +80,6 @@ class CLI:
                         if not Conexion.conexiones:
                             raise ValueError("[CONEXIONES] No se encontraron conexiones en el archivo")
 
-                        # SOLICITUDES
                         if nombre_solicitudescsv.strip() == "":
                             raise ValueError("[SOLICITUDES] El nombre del archivo de solicitudes no puede estar vacío.")
                         if nombre_solicitudescsv.endswith(".csv"):
@@ -244,6 +241,3 @@ class CLI:
 ###################################################################################
 
 vehiculos = list(transportes.values())
-
-# cli = CLI()
-# cli.runCLI()

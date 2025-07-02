@@ -28,12 +28,8 @@ class Nodo():
             for fila in lector:
                 if fila[0] == "":
                     raise ValueError("El nombre de uno de los nodos esta vacio.")
-                elif fila[0] not in cls.nodos:  # Verifica si el nodo ya existe:
+                elif fila[0] not in cls.nodos:  
                     Nodo(fila[0])
                 
-'''                
-archivo_nodos = 'nodos.csv'
-Nodo.asignar_nodos(archivo_nodos)
-print(Nodo.nodos)
-'''
+
 

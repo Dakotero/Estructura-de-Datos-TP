@@ -60,10 +60,37 @@ class Conexion():
                     modo = transportes['aereo'] 
                 elif modo == "fluvial":
                     modo = transportes['fluvial']
+                else:
+                    raise ValueError(f"El modo de transporte '{modo}' no es válido. Debe ser uno de: {', '.join(tipo_conexion)}.")
                 
-                distancia = float(fila[3].strip())    
+                distancia = float(fila[3].strip())
+                if distancia <= 0:
+                    raise ValueError(f"La distancia debe ser mayor a cero (origen: {origen_nombre}, destino: {destino_nombre}).")
                 restriccion = fila[4]
                 valor_restriccion = fila[5]
+                if restriccion == "prob_mal_tiempo":
+                    try:
+                        prob = float(valor_restriccion)
+                    except ValueError:
+                        raise ValueError(f"El valor de restricción para 'prob_mal_tiempo' debe ser numérico (origen: {origen_nombre}, destino: {destino_nombre}).")
+                    if not (0 <= prob <= 1):
+                        raise ValueError(f"La probabilidad de mal tiempo debe estar entre 0 y 1 (origen: {origen_nombre}, destino: {destino_nombre}).")
+                elif restriccion == "tipo":
+                    es_tipo_valido = valor_restriccion.lower() in ("maritimo", "fluvial")
+                    if not es_tipo_valido:
+                        raise ValueError(f"El tipo de restricción debe ser 'maritimo' o 'fluvial' (origen: {origen_nombre}, destino: {destino_nombre}).")
+                elif valor_restriccion != "":
+                    try:
+                        numero_restriccion = float(valor_restriccion)
+                        if numero_restriccion < 0:
+                            raise ValueError(f"El valor de restricción no puede ser negativo (origen: {origen_nombre}, destino: {destino_nombre}).")
+                    except ValueError:
+                        raise ValueError(f"El valor de restricción debe ser numérico (origen: {origen_nombre}, destino: {destino_nombre}).")
+
+
+
+
+
 
                 Conexion(origen, destino, modo, distancia, restriccion, valor_restriccion)
                 

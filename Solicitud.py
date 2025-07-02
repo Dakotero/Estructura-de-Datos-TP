@@ -32,6 +32,8 @@ class Solicitud:
                     peso_kg = int(fila[1].strip())
                 except (ValueError, TypeError):
                     raise ValueError(f"Uno de los pesos_kg no se pudo transformar a entero.")
+                if peso_kg <= 0:
+                    raise ValueError(f"El peso_kg no puede ser negativo o cero (ID: {id_carga}).")
                 origen = fila[2].strip()
                 destino = fila[3].strip()
                 
@@ -43,15 +45,3 @@ class Solicitud:
 
                 Solicitud(id_carga, peso_kg, origen, destino)
 
-'''
-archivo_solicitud = 'solicitudes.csv'
-Solicitud.asignar_solicitudes(archivo_solicitud)          
-
-for s in Solicitud.solicitudes.values():
-    print(f"Solicitud {s.id_carga}: origen= {s.origen}, destino= {s.destino}, carga= {s.peso_kg} kg")
-'''
-
-
-'''id_carga,peso_kg,origen,destino
-CARGA_001,70000,Zarate,Mar_del_Plata
-'''

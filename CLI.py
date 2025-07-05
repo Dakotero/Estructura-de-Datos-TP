@@ -119,38 +119,37 @@ class CLI:
                 print("b. Ver total Conexiones")
                 print("c. Ver Vehiculos")
                 print("d. Ver Solicitudes")
-                print("~")
+                print("")
                 print("z. Cerrar programa")
 
                 opcion = input("\n[Menu] Seleccione una opción: ").strip().lower()
                 time.sleep(0.5)
 
                 if opcion == "a":
-                    print(f"\n[Resultado] Total de Nodos: {len(Nodo.nodos)}")
+                    print(f"\nTotal de Nodos: {len(Nodo.nodos)}")
                     for nombre, nodo in Nodo.nodos.items():
-                        print(f"Nombre: {nombre},\t\t\tObjeto: {nodo}")
+                        print(f"{nombre}")
                     time.sleep(1)
 
                 elif opcion == "b":
-                    print(f"\n[Resultado] Total de Conexiones: {len(Conexion.conexiones)}")
+                    print(f"\nTotal de Conexiones: {len(Conexion.conexiones)}")
                     for c in Conexion.conexiones:
                         print(f"Origen: {c.origen.nombre},\t\t\tDestino: {c.destino.nombre},\t\t\tModo: {c.modo.modo}")
                     time.sleep(1)
 
                 elif opcion == "c":
-                    print(f"\n[Resultado] Total de Vehiculos: {len(vehiculos)}")
+                    print(f"\nTotal de Vehiculos: {len(vehiculos)}")
                     for v in transportes.values():
-                        print(f"{v.modo} - Capacidad: {v.capacidad_kg} kg, Velocidad: {v.velocidad_nom_kmh} km/h")
+                        print(f"{v.modo} - Capacidad máxima: {v.capacidad_kg} kg, Velocidad nominal: {v.velocidad_nom_kmh} km/h")
                     time.sleep(1)
 
                 elif opcion == "d":
                     while True:
-                        print("~~~ SOLICITUDES ~~~")
-                        print(f"\n[Menu] Seleccione una de las {len(solicitudes)} solicitudes:")
+                        print("\n~~~ SOLICITUDES ~~~")
                         for solicitud in solicitudes:
                             print(f"{solicitud.id_carga}: {solicitud.origen} -> {solicitud.destino}")
-                        print(f"\n[Menu] Si desea volver al menu, ingresar 'MENU'\n")
-                        
+                        print(f"\n[Menu] Si desea volver al menu, ingresar 'MENU'")
+                        print(f"[Menu] Si desea analizar una solicitud, seleccione una de las {len(solicitudes)} solicitudes")
                         id_solicitud = input("[Menu] Ingrese el ID de la solicitud (ex. CARGA_0011): ").strip()
 
                         if id_solicitud.lower() == "menu":
@@ -181,13 +180,13 @@ class CLI:
                                 print("a. Ver Rutas")
                                 print("b. Ver Ruta mas Rapida y sus Graficos")
                                 print("c. Ver Ruta mas Economica y sus Graficos")
-                                print("d. Ver la ruta con mayor cantidad de ciudades intermedias")
-                                print("~")
+                                print("d. Ver la ruta con mayor cantidad de paradas intermedias")
+                                print("")
                                 print("z. Ver otra solicitud o opciones del menu")
 
                                 opcion = input("\n[Menu] Seleccione una opción: ").strip().lower()
                                 if opcion == "a":
-                                    print(f"\n[Resultado] Rutas para la solicitud {id_solicitud}:")
+                                    print(f"\nRutas para la solicitud {id_solicitud}:")
                                     if not rutas:
                                         print("No se encontraron rutas para esta solicitud.")
                                         continue
@@ -196,19 +195,19 @@ class CLI:
                                     time.sleep(1)
 
                                 elif opcion == "b":
-                                    print(f"\n[Resultado] Ruta más rápida y sus Gráficos para la solicitud {id_solicitud}:")
+                                    print(f"\nRuta más rápida y sus Gráficos para la solicitud {id_solicitud}:")
                                     Ruta.mostrar_ruta_mas_rapida(rutas)
                                     print(f"\n[IMPORTANTE] Si no podes continuar, es porque hay todavia graficos abiertos!")
                                     time.sleep(1)
 
                                 elif opcion == "c":
-                                    print(f"\n[Resultado] Ruta más económica y sus Gráficos para la solicitud {id_solicitud}:")
+                                    print(f"\nRuta más económica y sus Gráficos para la solicitud {id_solicitud}:")
                                     Ruta.mostrar_ruta_mas_economica(rutas, solicitud)
                                     print(f"\n[IMPORTANTE] Si no podes continuar, es porque hay todavia graficos abiertos!")
                                     time.sleep(1)
 
                                 elif opcion == "d":
-                                    print(f"\n[Resultado] Ver la Ruta con mayor cantidad de ciudades intermedias {id_solicitud}:")
+                                    print(f"\nRuta con mayor cantidad de nodos intermedios para {id_solicitud}:")
                                     Ruta.mostrar_ruta_mas_ciudades(rutas)
                                     time.sleep(1)
 

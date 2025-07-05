@@ -18,14 +18,20 @@ class Ruta():
         self.tiempo_total = 0
         self.nodos = nodos
         self.cantidad_a_utilizar = 0
-        self.cantidad_conexiones = len(conexiones)
+        self.cantidad_conexiones = len(conexiones)+1
 
     def __str__(self):
 
         if not self.conexiones:
             return f"No hay conexiones para transporte ({self.transporte})"
 
-        nodos = [self.conexiones[0].origen] + [c.destino for c in self.conexiones]
+        #nodos = [self.conexiones[0].origen] + [c.destino for c in self.conexiones]
+        nodos = [self.conexiones[0].origen]
+        for c in self.conexiones:
+            if c.origen == nodos[-1]:
+                nodos.append(c.destino)
+            else:
+                nodos.append(c.origen)
         nombres_nodos = [n.nombre for n in nodos]
 
         tiempo_total = self.calcular_tiempo_ruta()
@@ -36,7 +42,7 @@ class Ruta():
         texto += f"\nDuración: {int(tiempo_total)}h {int((tiempo_total % 1) * 60)}m {int((((tiempo_total % 1) * 60) % 1) * 60)}s"
         texto += f"\nCosto total: ${costo_total:,.2f}"
         texto += f"\nCantidad de transportes: {self.cantidad_a_utilizar}"
-        texto +=f"\nCantidad de ciudades: {self.cantidad_conexiones}"
+        texto +=f"\nCantidad de ciudades: {int(self.cantidad_conexiones)}"
 
 
         return texto
@@ -114,7 +120,6 @@ class Ruta():
                 tiempo_minimo = tiempo
                 ruta_mas_rapida = ruta
 
-        print("\n[RESULTADO] Ruta más rápida")
         print(f"{ruta_mas_rapida}")  
         
         graficar_tiempo_vs_distancia(ruta_mas_rapida, tipo_ruta="Ruta más rápida")
@@ -136,7 +141,6 @@ class Ruta():
                 costo_minimo = costo
                 ruta_mas_economica = ruta
 
-        print("\n[RESULTADO] Ruta más económica")
         print(f"{ruta_mas_economica}")
         
         graficar_tiempo_vs_distancia(ruta_mas_economica, tipo_ruta="Ruta más económica")
@@ -158,5 +162,5 @@ class Ruta():
                 mas_ciudades = cantidad
                 ruta_mas_ciuadades = ruta
 
-        print("\n[RESULTADO] Ruta con mas ciudades")
-        print(f"{ruta_mas_ciuadades}")  
+        print(f"{ruta_mas_ciuadades}")
+        print(f"Cantidad de nodos intermedios: {int(ruta_mas_ciuadades.cantidad_conexiones)-2}")

@@ -18,8 +18,12 @@ CLI
 3) Principales desafios
 Se tomo como una base clave del trabajo la generacion de rutas. Que son creadas en el archivo optimizador.
 A partir de ese punto se fueron creando las diferentes clases y adaptando el optimizador segun lo necesario de la caracteristicas de las clases.
-Luego se crearon las funciones de la busqueda de rutas mas econimica y de menor tiempo. Al igual que la creacion de graficos.
-Finalmente se crearon las debidas restricciones de cada clase, para que el codigo responda a un posibles errores.
+Luego se crearon las funciones de la busqueda de rutas mas econimica y de menor tiempo. Al igual que la creacion de gráficos.
+En total se generan 4 tipos de gráfico: el primero muestra la distancia recorrida en función del tiempo; el segundo muestra el tiempo transcurrido
+luego de cada conexión; el tercero muestra el costo acumulado en función de la distancia recorrida; y el cuarto muestra la 'popularidad' 
+o 'concurrencia' de los nodos en las rutas posibles (sin contar el origen y el destino), es decir, la frecuencia con la cual se usan los
+nodos en cada conjunto de rutas.
+Finalmente se crearon las debidas restricciones de cada clase, para que el código responda a un posibles errores.
 
 4) Decisiones de diseño
 Creamos un archivo por cada clase, tambien existe el archivo correr_rutas que esta formado con diferentes funciones.

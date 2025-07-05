@@ -24,8 +24,6 @@ class Ruta():
 
         if not self.conexiones:
             return f"No hay conexiones para transporte ({self.transporte})"
-
-        #nodos = [self.conexiones[0].origen] + [c.destino for c in self.conexiones]
         nodos = [self.conexiones[0].origen]
         for c in self.conexiones:
             if c.origen == nodos[-1]:

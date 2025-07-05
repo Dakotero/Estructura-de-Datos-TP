@@ -1,14 +1,12 @@
 import matplotlib.pyplot as plt
 from medios_transporte import transportes
+from collections import Counter
 
 
 def graficar_tiempo_vs_distancia(ruta, tipo_ruta="Ruta"):
     tiempo_acumulado = 0
     distancia_acumulada = 0
 
-    tiempos = [0]
-    distancias = [0]
-    
     fig, ax = plt.subplots(figsize=(10, 5))
 
     for i, conexion in enumerate(ruta.conexiones):
@@ -36,9 +34,7 @@ def graficar_tiempo_vs_distancia(ruta, tipo_ruta="Ruta"):
 
 
 
-def graficador_conexion_vs_tiempo(ruta, tipo_ruta):
-
-    
+def graficador_conexion_vs_tiempo(ruta, tipo_ruta):  
     nombres_conexiones = []
     tiempos_acumulados = [0]
     tiempos_total = 0
@@ -117,3 +113,24 @@ def graficar_distancia_vs_costo(ruta, tipo_ruta="Ruta"):
     plt.tight_layout()
     plt.show()
 
+
+def contar_intermedias(rutas):
+    contador = Counter()
+    for ruta in rutas:
+        nodos_ruta = ruta.nodos
+        if len(nodos_ruta) > 2:
+            intermedias = nodos_ruta[1:-1]
+            for ciudad in intermedias:
+                contador[ciudad.nombre] += 1
+    return contador
+
+def graficar_conteo_nodos(conteo):
+    ciudades = list(conteo.keys())
+    cantidades = list(conteo.values())
+
+    plt.figure(figsize=(10,6))
+    plt.bar(ciudades, cantidades, color='skyblue')
+    plt.xlabel("Nodos")
+    plt.ylabel("Cantidad de ocurrencias en las rutas posibles")
+    plt.title("Frecuencia de aparición de los nodos 'intermedios' en las rutas posibles")
+    plt.show()

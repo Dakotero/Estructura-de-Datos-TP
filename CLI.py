@@ -180,7 +180,8 @@ class CLI:
                                 print("a. Ver Rutas")
                                 print("b. Ver Ruta mas Rapida y sus Graficos")
                                 print("c. Ver Ruta mas Economica y sus Graficos")
-                                print("d. Ver la ruta con mayor cantidad de paradas intermedias")
+                                print("d. Ver Ruta con mayor cantidad de paradas intermedias")
+                                print("e. Ver gráfico de frecuencia de uso de nodos en las rutas")
                                 print("")
                                 print("z. Ver otra solicitud o opciones del menu")
 
@@ -210,6 +211,13 @@ class CLI:
                                     print(f"\nRuta con mayor cantidad de nodos intermedios para {id_solicitud}:")
                                     Ruta.mostrar_ruta_mas_ciudades(rutas)
                                     time.sleep(1)
+                                    
+                                elif opcion == "e":
+                                    print(f"\nGráfico de aparición de ciudades intermedias en las rutas de la solicitud {id_solicitud}:")
+                                    conteo = contar_intermedias(rutas)
+                                    graficar_conteo_nodos(conteo)
+                                    print(f"\n[IMPORTANTE] Si no podés continuar, es porque hay todavía gráficos abiertos!")
+                                    time.sleep(1)                                  
 
                                 elif opcion == "z":
                                     print("\n[Menu] Volviendo a cargar los datos...")
